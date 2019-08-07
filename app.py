@@ -18,6 +18,8 @@ c.execute("""SELECT * FROM dbo.prueba_aram""")
 for row in c.fetchall():
     print('id: '+ str(row[0])+'   Nombre: '+str(row[1]))
 
+#Read CSV to df
+
 
 conn.close()
 #Import CSV to DB

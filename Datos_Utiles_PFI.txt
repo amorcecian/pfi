@@ -1,0 +1,12 @@
+Datos Utiles para PFI
+
+DATASOURCES COPADOS:
+- Estaciones de bicis:
+https://data.buenosaires.gob.ar/dataset/estaciones-bicicletas-publicas
+
+- Recorridos, ya esta descargado:
+https://data.buenosaires.gob.ar/dataset/bicicletas-publicas
+
+- Ciclovias
+https://data.buenosaires.gob.ar/dataset/ciclovias
+
