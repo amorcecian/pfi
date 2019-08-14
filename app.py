@@ -14,7 +14,7 @@ db = 'pfidb'
 #Create connection to DB
 conn = pymssql.connect(server,user,password,db)
 c = conn.cursor()
-c.execute("""SELECT * FROM dbo.prueba_aram""")
+c.execute("""SELECT * FROM [dbo].[estaciones-de-bicicletas-publicas]""")
 for row in c.fetchall():
     print('id: '+ str(row[0])+'   Nombre: '+str(row[1]))
 
