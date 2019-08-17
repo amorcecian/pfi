@@ -1,5 +1,6 @@
 import flask
 import pymssql
+import pandas as pd
 
 # If want to connect with OpenShift and pass the values
 # server = getenv("PYMSSQL_TEST_SERVER")
@@ -19,6 +20,8 @@ for row in c.fetchall():
     print('id: '+ str(row[0])+'   Nombre: '+str(row[1]))
 
 #Read CSV to df
+df = pd.read_csv("recorridos-realizados-2018.csv")
+print(df.head())
 
 
 conn.close()
