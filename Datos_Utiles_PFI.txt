@@ -10,3 +10,10 @@ https://data.buenosaires.gob.ar/dataset/bicicletas-publicas
 - Ciclovias
 https://data.buenosaires.gob.ar/dataset/ciclovias
 
+
+
+
+TODO:
+- Joinear los recorridos con las estaciones para hacer un analisis de las estaciones.
+- Identificar las estaciones de bicis que menos se usan
+- 
