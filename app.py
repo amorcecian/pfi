@@ -7,8 +7,15 @@ import pandas as pd
 # user = getenv("PYMSSQL_TEST_USERNAME")
 # password = getenv("PYMSSQL_TEST_PASSWORD")
 
-server = 'pfidbserver.database.windows.net'
-user = 'pfi_admin@pfidbserver'
+# AzureDB
+# server = 'pfidbserver.database.windows.net'
+# user = 'pfi_admin@pfidbserver'
+# password = 'AramLucas2019.'
+# db = 'pfidb'
+
+# Local DB
+server = '192.168.0.142'
+user = 'sa'
 password = 'AramLucas2019.'
 db = 'pfidb'
 
@@ -25,10 +32,10 @@ df_recorridos = pd.read_csv("recorridos-realizados-2018.csv")
 # Joining DFs
 df_inner = pd.merge(df_estaciones, df_recorridos, how='inner', left_on=['nro_est'], right_on=['bici_estacion_origen'])
 
-print(df_inner[['nombre','nro_est','bici_estacion_origen','bici_estacion_destino','bici_tiempo_uso']].head(10))
+# print(df_inner[['nombre','nro_est','bici_estacion_origen','bici_estacion_destino','bici_tiempo_uso']].head(10))
 
 df = df_inner.groupby('nombre')['nombre'].count().sort_values()
-print(df)
+print(df.head(10))
 
 # print(df_inner.groupby(['nombre'])['nombre'].count())
 
