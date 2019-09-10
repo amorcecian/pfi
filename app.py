@@ -39,5 +39,6 @@ print(df.head(10))
 
 # print(df_inner.groupby(['nombre'])['nombre'].count())
 
+
 conn.close()
 #Import CSV to DB
