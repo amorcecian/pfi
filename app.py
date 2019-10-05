@@ -1,6 +1,8 @@
 import flask
 import pymssql
 import pandas as pd
+import requests
+import json
 
 # If want to connect with OpenShift and pass the values
 # server = getenv("PYMSSQL_TEST_SERVER")
@@ -14,7 +16,7 @@ import pandas as pd
 # db = 'pfidb'
 
 # Local DB
-server = '192.168.0.142'
+server = '172.16.169.128'
 user = 'sa'
 password = 'AramLucas2019.'
 db = 'pfidb'
@@ -35,9 +37,16 @@ df_inner = pd.merge(df_estaciones, df_recorridos, how='inner', left_on=['nro_est
 # print(df_inner[['nombre','nro_est','bici_estacion_origen','bici_estacion_destino','bici_tiempo_uso']].head(10))
 
 df = df_inner.groupby('nombre')['nombre'].count().sort_values()
-print(df.head(10))
+# print(df)
 
 # print(df_inner.groupby(['nombre'])['nombre'].count())
 
 conn.close()
 #Import CSV to DB
+
+# Consuming USIG API to normalize the address
+p = {"calle": "OBLIGADO RAFAEL, Av.Costanera", "altura":"6182", "desambiguar":1}
+response = requests.get("https://ws.usig.buenosaires.gob.ar/rest/normalizar_y_geocodificar_direcciones",params=p)
+pepito = json.dumps(response.json())
+print(json.dumps(response.json()))
+print(pepito[2])
