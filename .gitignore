@@ -1,6 +1,4 @@
 venv
 .vscode
 __pycache__/
-recorridos-realizados-2018.csv
-ciclovias.csv
-recorridos-realizados-2018-corregido.csv
+*.csv
