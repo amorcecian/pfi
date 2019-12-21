@@ -1,8 +1,11 @@
 import pandas as pd
 import pymssql
 
+# This value defines whether two points are considered close or not.
+MAXIMUM_ANGULAR_DISTANCE = 0.0025
+
 def is_close(a, b):
-    return (abs(a[0] - b[0]) < 0.0025 and abs(a[1] - b[1]) < 0.0025)
+    return (abs(a[0] - b[0]) < MAXIMUM_ANGULAR_DISTANCE and abs(a[1] - b[1]) < MAXIMUM_ANGULAR_DISTANCE)
 
 # Local DB PC
 server = 'DESKTOP-3OHRULK'
