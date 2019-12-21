@@ -21,7 +21,11 @@ conn = pymssql.connect(server,user,password,db)
 
 c = conn.cursor()
 # Bring all GPS coordinates from bike roads
-c.execute("SELECT lat_origen, long_origen FROM [dbo].[ciclovias]")
+c.execute("""SELECT lat_origen, long_origen FROM [dbo].[ciclovias] 
+            WHERE nomoficial NOT IN ('LA PAMPA', 'TRONADOR', 'CERETTI', 'LUGONES', 
+            'BONIFACIO, JOSE', 'PRIMERA JUNTA',
+            'CULPINA','PEDERNERA',
+            'MENDEZ DE ANDES', 'TRES ARROYOS')""")
 points = c.fetchall()
 c = conn.cursor()
 # Bring all GPS coordinates from bike stations
