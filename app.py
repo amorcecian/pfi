@@ -12,11 +12,12 @@ from functions import cluster
 # user = getenv("PYMSSQL_TEST_USERNAME")
 # password = getenv("PYMSSQL_TEST_PASSWORD")
 
-# # AzureDB
-# server = 'pfidbserver.database.windows.net'
-# user = 'pfi_admin@pfidbserver'
-# password = 'AramLucas2019.'
-# db = 'pfidb'
+# AzureDB
+# server = 'pfi-eco-bici.database.windows.net'
+# user = 'ciclovia@pfi-eco-bici'
+# password = 'Bicicleta2020'
+# db = 'EcoBici'
+# tds_version='7.2'
 
 # # # Local DB MAC
 # server = '172.16.169.128'
@@ -24,23 +25,28 @@ from functions import cluster
 # password = 'AramLucas2019.'
 # db = 'pfidb'
 
-# Local DB PC
-server = 'DESKTOP-3OHRULK'
-user = 'sa'
-password = 'welcome1'
-db = 'pfidb'
+# # Local DB PC
+# server = 'DESKTOP-3OHRULK'
+# user = 'sa'
+# password = 'welcome1'
+# db = 'pfidb'
 #######################################################
 #Create connection to DB
 #######################################################
 
 #Query that retrives the usage of the stations
-conn = pymssql.connect(server,user,password,db)
-query = open("master_query_v2.sql","r")
+# conn = pymssql.connect(server,user,password,db)
+conn = pymssql.connect('pfi-eco-bici.database.windows.net',
+                       user = 'ciclovia@pfi-eco-bici',
+                       password = 'Bicicleta2020',
+                       database = 'EcoBici',
+                       tds_version = '7.2')
+query = open("master_query_v3.sql","r")
 df_stations_usage = pd.read_sql_query(query.read(),conn)
 # print(df_stations_usage.head())
 
 
-stations_query = """SELECT * FROM [pfidb].[dbo].[estaciones-de-bicicletas-publicas]"""
+stations_query = """SELECT * FROM [EcoBici].[dbo].[estaciones-de-bicicletas-publicas]"""
 df_stations = pd.read_sql(stations_query,conn)
 # print(df_stations.head(20))
 
