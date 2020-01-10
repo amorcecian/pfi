@@ -5,7 +5,9 @@ import numpy as np
 import requests
 import json
 from datetime import datetime
-from functions import cluster
+from functions import cluster, insert_stations_with_centroids
+import sqlalchemy
+from sqlalchemy  import create_engine
 
 # # If want to connect with OpenShift and pass the values
 # server = getenv("PYMSSQL_TEST_SERVER")
@@ -13,11 +15,11 @@ from functions import cluster
 # password = getenv("PYMSSQL_TEST_PASSWORD")
 
 # AzureDB
-# server = 'pfi-eco-bici.database.windows.net'
-# user = 'ciclovia@pfi-eco-bici'
-# password = 'Bicicleta2020'
-# db = 'EcoBici'
-# tds_version='7.2'
+server = 'pfi-eco-bici.database.windows.net'
+user = 'ciclovia@pfi-eco-bici'
+password = 'Bicicleta2020'
+db = 'EcoBici'
+#tds_version='7.2'
 
 # # # Local DB MAC
 # server = '172.16.169.128'
@@ -35,12 +37,18 @@ from functions import cluster
 #######################################################
 
 #Query that retrives the usage of the stations
-# conn = pymssql.connect(server,user,password,db)
-conn = pymssql.connect('pfi-eco-bici.database.windows.net',
-                       user = 'ciclovia@pfi-eco-bici',
-                       password = 'Bicicleta2020',
-                       database = 'EcoBici',
-                       tds_version = '7.2')
+conn = pymssql.connect(server,user,password,db)
+# conn = pymssql.connect('pfi-eco-bici.database.windows.net',
+#                        user = 'ciclovia@pfi-eco-bici',
+#                        password = 'Bicicleta2020',
+#                        database = 'EcoBici',
+#                        tds_version = '7.2')
+
+#Connection using sqlAlchemy
+conn_for_insert = fr'mssql+pymssql://'+user+':'+password+'@'+server+'/'+db
+engine = create_engine(conn_for_insert)
+
+
 query = open("master_query_v3.sql","r")
 df_stations_usage = pd.read_sql_query(query.read(),conn)
 # print(df_stations_usage.head())
@@ -67,12 +75,13 @@ print(df_stations_usage.head(10))
 #-# Podría meter todo en una función y pasarle por parametro el df de stations
 #-# y el K, para poder variarlo mas "facil"
 df_mergeado = cluster(df_stations, 30) # Cluster into 30 groups
-print(list(df_mergeado.columns.values))
-print(df_mergeado.head(10))
+#print(list(df_mergeado.columns.values))
+insert_stations_with_centroids(engine,'stations_with_centroids',df_mergeado)
+#print(df_mergeado.head(10))
 
 df_clusters = df_mergeado.groupby("cluster")["nro_est"].apply(list).reset_index()
 df_clusters["count"] = df_clusters["nro_est"].apply(len)
-print(df_clusters.head(10))
+#print(df_clusters.head(10))
 
 ##### Adding this
 # Create a many to one with Cluster # and Station #
@@ -94,7 +103,11 @@ df_filter = pd.merge(df_filter, df_ocious_clusters, on=['cluster', 'datetime'], 
 # Filter out those that do have available bikes in stations in the same cluster
 df_filter = df_filter[df_filter['not_very_used'] == False]
 # df_filter now holds all stations and times that are busy with no other station with free bikes in the same cluster.
+df_filter = df_filter[['nombre', 'nro_est_x', 'percentage_of_usage', 'datetime', 'cluster']]
+df_stations_usage.rename(columns={'nro_est_x': 'nro_est_x'}, inplace=True)
 print(len(df_filter.index))
+print(df_filter.head(50))
+insert_stations_with_centroids(engine,'full_stations',df_filter) #Inserting the full stations
 
 conn.close()
 #Import CSV to DB

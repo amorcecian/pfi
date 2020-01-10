@@ -2,6 +2,9 @@ from sklearn.cluster import KMeans, DBSCAN
 from sklearn.metrics import adjusted_rand_score, silhouette_score, silhouette_samples
 from sklearn.neighbors import NearestNeighbors
 import pandas as pd
+import sqlalchemy
+from sqlalchemy  import create_engine
+import pymssql
 
 def cluster(df_stations, K):
     lat_long = df_stations[["lat", "long"]].values
@@ -15,3 +18,8 @@ def cluster(df_stations, K):
     df_mergeado.rename(columns={"cluster_x": "cluster", "lat_centroide_x": "lat_centroide"
         , "long_centroide_x": "long_centroide"})
     return df_mergeado
+
+
+def insert_stations_with_centroids(engine,table,df):
+    df.to_sql(name=table,con=engine,schema='dbo',if_exists='replace'
+    ,index=False,method=None,chunksize=1000)
