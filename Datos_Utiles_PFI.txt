@@ -16,3 +16,12 @@ https://data.buenosaires.gob.ar/dataset/ciclovias
 Conectar pymssql con AzureDB:
 https://docs.microsoft.com/en-us/sql/connect/python/pymssql/step-1-configure-development-environment-for-pymssql-python-development?redirectedfrom=MSDN&view=sql-server-ver15
 
+
+
+
+How to restore a bkp file in AWS:
+https://www.youtube.com/watch?v=aj76RPamXeE
+EXEC msdb.dbo.rds_restore_database @restore_db_name='<db_name>', 
+@s3_arn_to_restore_from='arn:aws:s3:::<s3_bucket_name>/<file_name>.bak';
+
+exec msdb.dbo.rds_task_status;

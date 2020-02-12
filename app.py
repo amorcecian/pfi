@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import requests
 import json
+import logging
 from datetime import datetime
 from functions import cluster, insert_stations_with_centroids
 import sqlalchemy
@@ -15,11 +16,16 @@ from sqlalchemy  import create_engine
 # password = getenv("PYMSSQL_TEST_PASSWORD")
 
 # AzureDB
-server = 'pfi-eco-bici.database.windows.net'
-user = 'ciclovia@pfi-eco-bici'
-password = 'Bicicleta2020'
-db = 'EcoBici'
-#tds_version='7.2'
+# server = 'pfi-eco-bici.database.windows.net'
+# user = 'ciclovia@pfi-eco-bici'
+# password = 'Bicicleta2020'
+# db = 'EcoBici'
+
+# AWS
+server = 'pfidb.ci3ir6nuotoi.sa-east-1.rds.amazonaws.com'
+user = 'admin'
+password = 'AramLucas2020.'
+db = 'pfidb'
 
 # # # Local DB MAC
 # server = '172.16.169.128'
@@ -32,11 +38,20 @@ db = 'EcoBici'
 # user = 'sa'
 # password = 'welcome1'
 # db = 'pfidb'
+
+#######################################################
+#Logger configuration
+#######################################################
+logstr = "%(asctime)s: %(levelname)s: Line:%(lineno)d %(message)s"
+logging.basicConfig(#filename="output.log",
+                    level=logging.DEBUG,
+                    filemode="w",
+                    format=logstr)
+
 #######################################################
 #Create connection to DB
 #######################################################
 
-#Query that retrives the usage of the stations
 conn = pymssql.connect(server,user,password,db)
 # conn = pymssql.connect('pfi-eco-bici.database.windows.net',
 #                        user = 'ciclovia@pfi-eco-bici',
@@ -47,16 +62,15 @@ conn = pymssql.connect(server,user,password,db)
 #Connection using sqlAlchemy
 conn_for_insert = fr'mssql+pymssql://'+user+':'+password+'@'+server+'/'+db
 engine = create_engine(conn_for_insert)
+logging.info("Connection established successfully")
 
-
+#Query that retrives the usage of the stations
 query = open("master_query_v3.sql","r")
 df_stations_usage = pd.read_sql_query(query.read(),conn)
-# print(df_stations_usage.head())
 
-
-stations_query = """SELECT * FROM [EcoBici].[dbo].[estaciones-de-bicicletas-publicas]"""
+stations_query = """SELECT * FROM [estaciones-de-bicicletas-publicas]"""
 df_stations = pd.read_sql(stations_query,conn)
-# print(df_stations.head(20))
+logging.info("Query read successfully")
 
 
 #######################################################
@@ -67,21 +81,20 @@ df_stations_usage = df_stations_usage[["nombre","nro_est","lat","long","percenta
 df_stations_usage['return_datetime']=df_stations_usage['return_datetime'].astype('datetime64[s]')
 df_stations_usage.rename(columns={'return_datetime': 'datetime'}, inplace=True)
 df_stations_usage = df_stations_usage.sort_values(by=["percentage_of_usage"], ascending=True)
-print(df_stations_usage.head(10))
+#print(df_stations_usage.head(10))
+logging.info("Percentage of usage of the stations determined")
 
 #######################################################
 # Group nearby stations
 #######################################################
-#-# Podría meter todo en una función y pasarle por parametro el df de stations
-#-# y el K, para poder variarlo mas "facil"
+logging.info("Starting to group nearby stations")
 df_mergeado = cluster(df_stations, 30) # Cluster into 30 groups
-#print(list(df_mergeado.columns.values))
 insert_stations_with_centroids(engine,'stations_with_centroids',df_mergeado)
-#print(df_mergeado.head(10))
+logging.info("Stations with centroids information loaded to the DB")
 
 df_clusters = df_mergeado.groupby("cluster")["nro_est"].apply(list).reset_index()
 df_clusters["count"] = df_clusters["nro_est"].apply(len)
-#print(df_clusters.head(10))
+
 
 ##### Adding this
 # Create a many to one with Cluster # and Station #
@@ -105,9 +118,14 @@ df_filter = df_filter[df_filter['not_very_used'] == False]
 # df_filter now holds all stations and times that are busy with no other station with free bikes in the same cluster.
 df_filter = df_filter[['nombre', 'nro_est_x', 'percentage_of_usage', 'datetime', 'cluster']]
 df_stations_usage.rename(columns={'nro_est_x': 'nro_est_x'}, inplace=True)
-print(len(df_filter.index))
-print(df_filter.head(50))
+logging.info("Nearby stations grouping finished")
+
+# print(len(df_filter.index))
+# print(df_filter.head(50))
+logging.info("Inserting the final list of the stations that are full")
 insert_stations_with_centroids(engine,'full_stations',df_filter) #Inserting the full stations
+logging.info("Insert of the stations that are full finished")
+
 
 conn.close()
 #Import CSV to DB
