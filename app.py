@@ -27,12 +27,6 @@ user = 'admin'
 password = 'AramLucas2020.'
 db = 'pfidb'
 
-# # # Local DB MAC
-# server = '172.16.169.128'
-# user = 'sa'
-# password = 'AramLucas2019.'
-# db = 'pfidb'
-
 # # Local DB PC
 # server = 'DESKTOP-3OHRULK'
 # user = 'sa'
