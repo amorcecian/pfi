@@ -21,7 +21,8 @@ def cluster(df_stations, K):
 
 
 def insert_stations_with_centroids(engine,table,df):
-    df.to_sql(name=table,con=engine,schema='dbo',if_exists='replace'
+    engine.execute("TRUNCATE TABLE [full_stations]")
+    df.to_sql(name=table,con=engine,schema='dbo',if_exists='append'
     ,index=False,method=None,chunksize=1000)
 
 def insert_path_areas(engine,table,df):
