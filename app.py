@@ -80,19 +80,19 @@ logging.info("Percentage of usage of the stations determined")
 
 #######################################################
 # Group nearby stations
-#######################################################
+#######################################################f
 logging.info("Starting to group nearby stations")
-df_mergeado = cluster(df_stations, 30) # Cluster into 30 groups
-insert_stations_with_centroids(engine,'stations_with_centroids',df_mergeado)
+df_merged = cluster(df_stations, 30) # Cluster into 30 groups
+insert_stations_with_centroids(engine,'stations_with_centroids',df_merged)
 logging.info("Stations with centroids information loaded to the DB")
 
-df_clusters = df_mergeado.groupby("cluster")["nro_est"].apply(list).reset_index()
+df_clusters = df_merged.groupby("cluster")["nro_est"].apply(list).reset_index()
 df_clusters["count"] = df_clusters["nro_est"].apply(len)
 
 
 ##### Adding this
 # Create a many to one with Cluster # and Station #
-df_station_to_cluster = df_mergeado[['cluster','nro_est']]
+df_station_to_cluster = df_merged[['cluster','nro_est']]
 # Add the cluster # to the stations usage df
 df_all = pd.merge(df_stations_usage, df_station_to_cluster, on='nro_est', how='left')
 # Add additional cluster data (other stations in same cluster and total stations in cluster)

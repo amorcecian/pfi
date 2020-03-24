@@ -12,7 +12,7 @@ import pymssql
 #   - K: Number of centroids to use by the K-Means algorithm. This is going to
 #     be fixed because we've tested some Ks and found the best for this exercise
 def cluster(df_stations, K):
-    # We are goint to create lat_long dataframe, which is a subset of 
+    # We are going to create lat_long dataframe, which is a subset of 
     # df_stations. We're going to cluster that dataframe in centroids in order
     # to determine which stations are close to each other.
     lat_long = df_stations[["lat", "long"]].values
