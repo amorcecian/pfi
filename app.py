@@ -6,7 +6,7 @@ import requests
 import json
 import logging
 from datetime import datetime
-from functions import cluster, insert_stations_with_centroids
+from functions import defining_right_k, cluster, insert_stations_with_centroids
 import sqlalchemy
 from sqlalchemy  import create_engine
 
@@ -21,17 +21,17 @@ from sqlalchemy  import create_engine
 # password = 'Bicicleta2020'
 # db = 'EcoBici'
 
-# AWS
-server = 'pfidb.ci3ir6nuotoi.sa-east-1.rds.amazonaws.com'
-user = 'admin'
-password = 'AramLucas2020.'
-db = 'pfidb'
-
-# # Local DB PC
-# server = 'DESKTOP-3OHRULK'
-# user = 'sa'
-# password = 'welcome1'
+# # AWS
+# server = 'pfidb.ci3ir6nuotoi.sa-east-1.rds.amazonaws.com'
+# user = 'admin'
+# password = 'AramLucas2020.'
 # db = 'pfidb'
+
+# Local DB PC
+server = 'DESKTOP-3OHRULK'
+user = 'sa'
+password = 'welcome1'
+db = 'pfidb'
 
 #######################################################
 #Logger configuration
@@ -47,11 +47,6 @@ logging.basicConfig(#filename="output.log",
 #######################################################
 
 conn = pymssql.connect(server,user,password,db)
-# conn = pymssql.connect('pfi-eco-bici.database.windows.net',
-#                        user = 'ciclovia@pfi-eco-bici',
-#                        password = 'Bicicleta2020',
-#                        database = 'EcoBici',
-#                        tds_version = '7.2')
 
 #Connection using sqlAlchemy
 conn_for_insert = fr'mssql+pymssql://'+user+':'+password+'@'+server+'/'+db
@@ -82,7 +77,8 @@ logging.info("Percentage of usage of the stations determined")
 # Group nearby stations
 #######################################################f
 logging.info("Starting to group nearby stations")
-df_merged = cluster(df_stations, 30) # Cluster into 30 groups
+K = defining_right_k(df_stations)
+df_merged = cluster(df_stations, K) # Cluster into K groups
 insert_stations_with_centroids(engine,'stations_with_centroids',df_merged)
 logging.info("Stations with centroids information loaded to the DB")
 
