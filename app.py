@@ -76,8 +76,10 @@ logging.info("Percentage of usage of the stations determined")
 #######################################################
 # Group nearby stations
 #######################################################f
-logging.info("Starting to group nearby stations")
+logging.info("Calculating the right K")
 K = defining_right_k(df_stations)
+logging.info("The right K is {}".format(str(K)))
+logging.info("Starting to group nearby stations")
 df_merged = cluster(df_stations, K) # Cluster into K groups
 insert_stations_with_centroids(engine,'stations_with_centroids',df_merged)
 logging.info("Stations with centroids information loaded to the DB")

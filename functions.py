@@ -69,7 +69,7 @@ def defining_right_k(df_stations):
     silhouette = pd.DataFrame(columns=['cluster','sil_coeff']) 
     for n_cluster in range(lower_limit, upper_limit):
         #Calculating KMeans w/ each cluster number to store their silhouette coefficient
-        kmeans = KMeans(n_clusters=n_cluster).fit(lat_long)
+        kmeans = KMeans(n_clusters=n_cluster,random_state=0).fit(lat_long)
         label = kmeans.labels_
         sil_coeff = silhouette_score(lat_long, label, metric='euclidean')
         silhouette = silhouette.append({'cluster':n_cluster, 'sil_coeff':sil_coeff},ignore_index=True)
