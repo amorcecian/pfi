@@ -6,7 +6,7 @@ import requests
 import json
 import logging
 from datetime import datetime
-from functions import defining_right_k, cluster, insert_stations_with_centroids
+from functions import stations_usage, defining_right_k, cluster, insert_stations_with_centroids
 import sqlalchemy
 from sqlalchemy  import create_engine
 
@@ -53,25 +53,26 @@ conn_for_insert = fr'mssql+pymssql://'+user+':'+password+'@'+server+'/'+db
 engine = create_engine(conn_for_insert)
 logging.info("Connection established successfully")
 
-#Query that retrives the usage of the stations
-query = open("master_query_v3.sql","r")
-df_stations_usage = pd.read_sql_query(query.read(),conn)
-
 stations_query = """SELECT * FROM [estaciones-de-bicicletas-publicas]"""
 df_stations = pd.read_sql(stations_query,conn)
 logging.info("Query read successfully")
+
+#Query that retrives the usage of the stations
+# query = open("master_query_v3.sql","r")
+# df_stations_usage = pd.read_sql_query(query.read(),conn)
+df_stations_usage = stations_usage(conn,df_stations)
 
 
 #######################################################
 # Determine % of usage of the stations
 #######################################################
-df_stations_usage["percentage_of_usage"] = (df_stations_usage["diferencia"]/df_stations_usage["capacidad"])*100
-df_stations_usage = df_stations_usage[["nombre","nro_est","lat","long","percentage_of_usage","return_datetime"]]
-df_stations_usage['return_datetime']=df_stations_usage['return_datetime'].astype('datetime64[s]')
-df_stations_usage.rename(columns={'return_datetime': 'datetime'}, inplace=True)
-df_stations_usage = df_stations_usage.sort_values(by=["percentage_of_usage"], ascending=True)
-#print(df_stations_usage.head(10))
-logging.info("Percentage of usage of the stations determined")
+# df_stations_usage["percentage_of_usage"] = (df_stations_usage["diferencia"]/df_stations_usage["capacidad"])*100
+# df_stations_usage = df_stations_usage[["nombre","nro_est","lat","long","percentage_of_usage","return_datetime"]]
+# df_stations_usage['return_datetime']=df_stations_usage['return_datetime'].astype('datetime64[s]')
+# df_stations_usage.rename(columns={'return_datetime': 'datetime'}, inplace=True)
+# df_stations_usage = df_stations_usage.sort_values(by=["percentage_of_usage"], ascending=True)
+# #print(df_stations_usage.head(10))
+# logging.info("Percentage of usage of the stations determined")
 
 #######################################################
 # Group nearby stations

@@ -77,3 +77,62 @@ def defining_right_k(df_stations):
     #to be the right K
     right_K = int(silhouette.loc[silhouette['sil_coeff'].idxmax()]['cluster'])
     return right_K
+
+
+def stations_usage(conn, df_stations):
+    paths_2018_df = pd.read_sql_query("SELECT * FROM [dbo].[recorridos-realizados-2018]", conn)
+    bak_df = paths_2018_df.copy() # I can take out this step later
+    paths_2018_df = paths_2018_df.dropna()
+    #######################################
+    # Data Manipulation
+    #######################################
+    # Create the return date
+    paths_2018_df['bici_tiempo_uso'] = pd.to_timedelta(paths_2018_df['bici_tiempo_uso'].astype(str))
+    paths_2018_df['bici_Fecha_hora_devolucion'] = paths_2018_df['bici_Fecha_hora_retiro'] + paths_2018_df['bici_tiempo_uso']
+    # Round the withdraw time
+    paths_2018_df['bici_Fecha_hora_retiro_round'] = paths_2018_df['bici_Fecha_hora_retiro'].apply(lambda x: x.replace(minute=0, second=0))
+    paths_2018_df['bici_Fecha_hora_devolucion_round'] = paths_2018_df['bici_Fecha_hora_devolucion'].apply(lambda x: x.replace(minute=0, second=0))
+    # Compute whitdraws for each station for each hour
+    withdraws_df = paths_2018_df[['bici_Fecha_hora_retiro_round', 'bici_estacion_origen', 'bici_id_usuario']].copy()
+    withdraws_df = withdraws_df.groupby(['bici_Fecha_hora_retiro_round', 'bici_estacion_origen'])['bici_id_usuario'].count().reset_index().sort_values('bici_Fecha_hora_retiro_round')
+    withdraws_df.rename(columns={'bici_id_usuario': 'retiros', 
+                                'bici_Fecha_hora_retiro_round': 'fecha_y_hora', 
+                                'bici_estacion_origen': 'estacion'}, inplace=True)
+    # Compute deposits for each station for each hour
+    deposits_df = paths_2018_df[['bici_Fecha_hora_devolucion_round', 'bici_estacion_destino', 'bici_id_usuario']].copy()
+    deposits_df = deposits_df.groupby(['bici_Fecha_hora_devolucion_round', 'bici_estacion_destino'])['bici_id_usuario'].count().reset_index().sort_values('bici_Fecha_hora_devolucion_round')
+    deposits_df.rename(columns={'bici_id_usuario': 'devoluciones', 
+                                'bici_Fecha_hora_devolucion_round': 'fecha_y_hora', 
+                                'bici_estacion_destino': 'estacion'}, inplace=True)
+    # Merge dataframes
+    stations_times_df = pd.merge(withdraws_df, deposits_df, on = ['fecha_y_hora', 'estacion'], how='outer')
+    stations_times_df.fillna(0, inplace=True)
+    stations_times_df['retiros'] = stations_times_df['retiros'].astype(int)
+    stations_times_df['devoluciones'] = stations_times_df['devoluciones'].astype(int)
+    stations_times_df['diferencia'] = stations_times_df['devoluciones'] - stations_times_df['retiros']
+    stations_times_df['usos'] = stations_times_df['devoluciones'] + stations_times_df['retiros']
+    #######################################
+    # Adding first time of usage
+    #######################################
+    first_use_df = stations_times_df.sort_values(['fecha_y_hora', 'estacion'])[['fecha_y_hora', 'estacion']].drop_duplicates(subset='estacion').copy()
+    tmp_df = pd.merge(first_use_df, 
+                    df_stations[['nro_est', 'capacidad']], 
+                    left_on='estacion', right_on='nro_est', 
+                    how='left')
+    stations_times_full_df = pd.merge(stations_times_df,
+                                tmp_df[['fecha_y_hora', 'estacion', 'capacidad']],
+                                on=['fecha_y_hora', 'estacion'],
+                                how='left')
+    stations_times_full_df.rename(columns={'capacidad':'bicicletas_en_estacion'}, inplace=True)
+    stations_times_full_df['bicicletas_en_estacion'] += stations_times_full_df['diferencia'] 
+    stations_times_full_df.sort_values('fecha_y_hora', inplace=True)
+
+    for station in df_stations['nro_est'].unique():
+        mask = stations_times_full_df['estacion'] == station
+        stations_times_full_df.loc[mask, 'previous_diff'] = stations_times_full_df.loc[mask, 'diferencia'].shift(1)
+        first_mask = stations_times_full_df.loc[mask, 'bicicletas_en_estacion'].isna()
+        stations_times_full_df.loc[mask & first_mask, 'bicicletas_en_estacion'] = stations_times_full_df.loc[mask & first_mask, 'previous_diff']
+        stations_times_full_df.loc[mask, 'bicicletas_en_estacion'] = stations_times_full_df.loc[mask, 'bicicletas_en_estacion'].cumsum()
+    stations_times_full_df.drop(columns='previous_diff', inplace=True)
+    stations_times_full_df.rename(columns={'estacion':'nro_est'}, inplace=True)
+    return stations_times_full_df
