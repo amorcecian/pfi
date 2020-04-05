@@ -6,7 +6,7 @@ import requests
 import json
 import logging
 from datetime import datetime
-from functions import stations_usage, defining_right_k, cluster, insert_stations_with_centroids
+from functions import *
 import sqlalchemy
 from sqlalchemy  import create_engine
 
@@ -61,6 +61,13 @@ logging.info("Query read successfully")
 # query = open("master_query_v3.sql","r")
 # df_stations_usage = pd.read_sql_query(query.read(),conn)
 df_stations_usage = stations_usage(conn,df_stations)
+stations_avg_df = df_stations_usage.groupby('nro_est')['bicicletas_en_estacion','usos'].mean()
+stations_avg_df = stations_avg_df.sort_values('bicicletas_en_estacion').reset_index()
+
+stations_avg_month_df = df_stations_usage.copy()
+stations_avg_month_df['year_month'] = stations_avg_month_df['fecha_y_hora'].apply(lambda x: x.strftime('%Y-%m'))
+stations_avg_month_df = stations_avg_month_df.groupby(['nro_est','year_month'])['bicicletas_en_estacion','usos'].mean()
+stations_avg_month_df = stations_avg_month_df.sort_values('bicicletas_en_estacion').reset_index()
 
 
 #######################################################
@@ -82,7 +89,7 @@ K = defining_right_k(df_stations)
 logging.info("The right K is {}".format(str(K)))
 logging.info("Starting to group nearby stations")
 df_merged = cluster(df_stations, K) # Cluster into K groups
-insert_stations_with_centroids(engine,'stations_with_centroids',df_merged)
+#insert_stations_with_centroids(engine,'stations_with_centroids',df_merged)
 logging.info("Stations with centroids information loaded to the DB")
 
 df_clusters = df_merged.groupby("cluster")["nro_est"].apply(list).reset_index()
@@ -90,34 +97,44 @@ df_clusters["count"] = df_clusters["nro_est"].apply(len)
 
 
 ##### Adding this
-# Create a many to one with Cluster # and Station #
-df_station_to_cluster = df_merged[['cluster','nro_est']]
-# Add the cluster # to the stations usage df
-df_all = pd.merge(df_stations_usage, df_station_to_cluster, on='nro_est', how='left')
-# Add additional cluster data (other stations in same cluster and total stations in cluster)
-df_all = pd.merge(df_all, df_clusters, on='cluster', how='left')
-# Define a not very used station in a given time as having > 0 percetage of usage 
-df_all['not_very_used'] = df_all['percentage_of_usage'] > 0
-# Ocious clusters are the ones that at a given time have a not very used station.
-df_ocious_clusters = df_all.groupby(['cluster', 'datetime'])['not_very_used'].any().reset_index()
-# Get those stations and times that are very busy
-df_filter = df_all[df_all['percentage_of_usage'] <= -30]
-# Filter out irrelevant columns
-df_filter = df_filter[['nombre', 'nro_est_x', 'percentage_of_usage', 'datetime', 'cluster', 'nro_est_y']]
-# Tell if that cluster has any ociuos station at the same time
-df_filter = pd.merge(df_filter, df_ocious_clusters, on=['cluster', 'datetime'], how='left')
-# Filter out those that do have available bikes in stations in the same cluster
-df_filter = df_filter[df_filter['not_very_used'] == False]
-# df_filter now holds all stations and times that are busy with no other station with free bikes in the same cluster.
-df_filter = df_filter[['nombre', 'nro_est_x', 'percentage_of_usage', 'datetime', 'cluster']]
-df_stations_usage.rename(columns={'nro_est_x': 'nro_est_x'}, inplace=True)
-logging.info("Nearby stations grouping finished")
+# # Create a many to one with Cluster # and Station #
+# df_station_to_cluster = df_merged[['cluster','nro_est']]
+# # Add the cluster # to the stations usage df
+# df_all = pd.merge(df_stations_usage, df_station_to_cluster, on='nro_est', how='left')
+# # Add additional cluster data (other stations in same cluster and total stations in cluster)
+# df_all = pd.merge(df_all, df_clusters, on='cluster', how='left')
+# # Define a not very used station in a given time as having > 0 percetage of usage 
+# df_all['not_very_used'] = df_all['percentage_of_usage'] > 0
+# # Ocious clusters are the ones that at a given time have a not very used station.
+# df_ocious_clusters = df_all.groupby(['cluster', 'datetime'])['not_very_used'].any().reset_index()
+# # Get those stations and times that are very busy
+# df_filter = df_all[df_all['percentage_of_usage'] <= -30]
+# # Filter out irrelevant columns
+# df_filter = df_filter[['nombre', 'nro_est_x', 'percentage_of_usage', 'datetime', 'cluster', 'nro_est_y']]
+# # Tell if that cluster has any ociuos station at the same time
+# df_filter = pd.merge(df_filter, df_ocious_clusters, on=['cluster', 'datetime'], how='left')
+# # Filter out those that do have available bikes in stations in the same cluster
+# df_filter = df_filter[df_filter['not_very_used'] == False]
+# # df_filter now holds all stations and times that are busy with no other station with free bikes in the same cluster.
+# df_filter = df_filter[['nombre', 'nro_est_x', 'percentage_of_usage', 'datetime', 'cluster']]
+# df_stations_usage.rename(columns={'nro_est_x': 'nro_est_x'}, inplace=True)
+# logging.info("Nearby stations grouping finished")
 
 # print(len(df_filter.index))
 # print(df_filter.head(50))
-logging.info("Inserting the final list of the stations that are full")
-insert_stations_with_centroids(engine,'full_stations',df_filter) #Inserting the full stations
-logging.info("Insert of the stations that are full finished")
+# logging.info("Inserting the final list of the stations that are full")
+# insert_stations_with_centroids(engine,'full_stations',df_filter) #Inserting the full stations
+# logging.info("Insert of the stations that are full finished")
+
+
+stations_clusters_usage = pd.merge(df_merged,stations_avg_df, on='nro_est', how='left')
+stations_clusters_usage['usos'].fillna(0, inplace=True)
+stations_clusters_usage['bicicletas_en_estacion'].fillna(stations_clusters_usage['capacidad'], inplace=True)
+stations_clusters_usage['very_used'] = np.where(stations_clusters_usage['bicicletas_en_estacion'] < 0, True, False)
+
+logging.info("Inserting the Stations with their clusters and usage")
+generic_insert(engine,'stations_clusters_usage',stations_clusters_usage) #Inserting the stations
+logging.info("Insert of the stations finished")
 
 
 conn.close()

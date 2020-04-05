@@ -41,7 +41,7 @@ def insert_stations_with_centroids(engine,table,df):
     df.to_sql(name=table,con=engine,schema='dbo',if_exists='replace'
     ,index=False,method=None,chunksize=1000)
 
-def insert_path_areas(engine,table,df):
+def generic_insert(engine,table,df):
     df.to_sql(name=table,con=engine,schema='dbo',if_exists='replace'
     ,index=False,method=None,chunksize=1000)
 

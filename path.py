@@ -4,7 +4,7 @@ import collections
 import logging
 import sqlalchemy
 from sqlalchemy  import create_engine
-from functions import insert_path_areas
+from functions import generic_insert
 
 
 #######################################################
@@ -92,7 +92,7 @@ df_transposed = df.transpose().reset_index()
 df_transposed.columns = ['Area','lat','long']
 
 logging.info("Inserting the final list of the areas")
-insert_path_areas(engine,'path_areas',df_transposed) #Inserting the areas
+generic_insert(engine,'path_areas',df_transposed) #Inserting the areas
 logging.info("Insert of the areas finished")
 
 # import csv
