@@ -37,7 +37,7 @@ def cluster(df_stations, K):
 
 
 def insert_stations_with_centroids(engine,table,df):
-    engine.execute("TRUNCATE TABLE [full_stations]")
+    #engine.execute("TRUNCATE TABLE [full_stations]")
     df.to_sql(name=table,con=engine,schema='dbo',if_exists='replace'
     ,index=False,method=None,chunksize=1000)
 
@@ -56,7 +56,7 @@ def defining_right_k(df_stations):
         #Saving the sse for that k
         sse_df = sse_df.append({'K':k, 'sse':kmeans.inertia_},ignore_index=True)
     
-    #Calculating the variation betwenn one row and the next one, in percentage
+    #Calculating the variation between one row and the next one, in percentage
     sse_df['variation'] = (sse_df['sse'].pct_change())*-1
     #Searching for a variation drop bigger that 10%
     i = sse_df.loc[(sse_df['variation'] <= 0.1)].index[0]
@@ -74,8 +74,9 @@ def defining_right_k(df_stations):
         sil_coeff = silhouette_score(lat_long, label, metric='euclidean')
         silhouette = silhouette.append({'cluster':n_cluster, 'sil_coeff':sil_coeff},ignore_index=True)
     #Selecting the cluster number that has the hihhest silhouette coefficient
-    #to be the right K
-    right_K = int(silhouette.loc[silhouette['sil_coeff'].idxmax()]['cluster'])
+    # and is greater than the amount of "barios" that have a valid station in it
+    silhouette.sort_values('sil_coeff',ascending=False,inplace=True)
+    right_K = int(silhouette.loc[silhouette['cluster']>=22]['cluster'].iloc[0])
     return right_K
 
 
