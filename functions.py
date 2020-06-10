@@ -5,6 +5,8 @@ import pandas as pd
 import sqlalchemy
 from sqlalchemy  import create_engine
 import pymssql
+import numpy as np
+from geopy.distance import distance
 
 # This function needs two parameters:
 #   - Dataframe with lat and long fields. Lat represents the latitude of the 
@@ -35,6 +37,21 @@ def cluster(df_stations, K):
         , "long_centroide_x": "long_centroide"})
     return df_merged
 
+def euclidean_distance(x):
+        return np.sqrt((x['lat'] - x['lat_centroide']) ** 2 + (x['long'] - x['long_centroide']) ** 2)
+
+def geodesic_distance(x):
+    station_location = (x['lat'],x['long'])
+    centroid_location = (x['lat_centroide'],x['long_centroide'])
+    return distance(station_location, centroid_location).km
+
+def determing_cluster_radius(centroids_df):
+    centroids_df_original = centroids_df.copy()
+    # centroids_df['radius'] = centroids_df.apply(euclidean_distance, axis=1)
+    centroids_df['radius'] = centroids_df.apply(geodesic_distance, axis=1)
+    centroid_radius_df = centroids_df[['cluster', 'radius']].groupby('cluster').max().reset_index()
+    centroids_stations_radius = pd.merge(centroids_df_original,centroid_radius_df,how='left',on='cluster')
+    return centroids_stations_radius
 
 def insert_stations_with_centroids(engine,table,df):
     #engine.execute("TRUNCATE TABLE [full_stations]")
