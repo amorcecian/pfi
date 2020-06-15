@@ -4,6 +4,7 @@ import requests
 import json
 import random
 import logging
+from config import config_data
 from datetime import datetime
 from data_bike.functions import *
 #from functions import *
@@ -13,15 +14,16 @@ from geopy import Point
 from geopy.distance import distance
 
 # # If want to connect with OpenShift and pass the values
-# server = getenv("PYMSSQL_TEST_SERVER")
-# user = getenv("PYMSSQL_TEST_USERNAME")
-# password = getenv("PYMSSQL_TEST_PASSWORD")
+server = config_data['SERVER']
+user = config_data['USER']
+password = config_data['PASSWORD']
+db = config_data['DB']    
 
 # Local DB PC
-server = 'DESKTOP-3OHRULK'
-user = 'sa'
-password = 'welcome1'
-db = 'pfidb'
+# server = 'DESKTOP-3OHRULK'
+# user = 'sa'
+# password = 'welcome1'
+# db = 'pfidb'
 
 #######################################################
 #Logger configuration
@@ -39,9 +41,12 @@ logging.basicConfig(#filename="output.log",
 #conn = pymssql.connect(server,user,password,db)
 
 #Connection using sqlAlchemy
-conn_for_insert = fr'mssql+pymssql://'+user+':'+password+'@'+server+'/'+db
-engine = create_engine(conn_for_insert)
-logging.info("Connection established successfully")
+def engine_creation():
+    logging.info(f"Connecting to {server} database")
+    conn_for_insert = fr'mssql+pymssql://'+user+':'+password+'@'+server+'/'+db
+    engine = create_engine(conn_for_insert)
+    logging.info("Connection established successfully")
+    return engine
 
 #######################################################
 #######################################################
@@ -52,7 +57,7 @@ logging.info("Connection established successfully")
 #######################################################
 # Group nearby stations
 #######################################################
-def group_stations():
+def group_stations(engine):
     logging.info("Cleaning the database")
     engine.execute("TRUNCATE TABLE [dbo].[stations_with_centroids]")
     engine.execute("TRUNCATE TABLE [dbo].[stations_clusters_usage]")
@@ -106,7 +111,7 @@ def new_lat_long(lat1, lon1):
     destination = distance(kilometers=d).destination(origin, b)
     return destination
 
-def add_station(nombre, capacidad, cluster):
+def add_station(nombre, capacidad, cluster,engine):
     # ONLY NEEDS NAME, CAPACITY AND CLUSTER!!
     logging.info("Adding new station to cluster {}".format(str(cluster)))
     new_station = {
@@ -188,7 +193,7 @@ def add_station(nombre, capacidad, cluster):
     return df_merged_radius,df_stations
 
 
-def calculate_stations_usage(df_merged_radius,df_stations):
+def calculate_stations_usage(df_merged_radius,df_stations,engine):
     logging.info("Calculating the stations usage")
     df_stations_usage = stations_usage(engine,df_stations)
     stations_avg_df = df_stations_usage.groupby('nro_est')['bicicletas_en_estacion','usos'].mean()

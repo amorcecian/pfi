@@ -47,14 +47,17 @@ def hello():
 
 @app.route('/start', methods=["GET"])
 def start():
-    df_merged_radius,df_stations = group_stations()
-    calculate_stations_usage(df_merged_radius,df_stations)
+    engine = engine_creation()
+    df_merged_radius,df_stations = group_stations(engine)
+    print("Stations grouped successfully")
+    calculate_stations_usage(df_merged_radius,df_stations,engine)
     return 'Data Successfully Loaded'
 
 @app.route('/add_station', methods=["POST"])
 def add_station_api():
     if request.method == 'POST':
+        engine = engine_creation()
         station = request.get_json()
-        df_merged_radius,df_stations = add_station(station['nombre'],station['capacidad'],station['cluster'])
-        calculate_stations_usage(df_merged_radius,df_stations)
+        df_merged_radius,df_stations = add_station(station['nombre'],station['capacidad'],station['cluster'],engine)
+        calculate_stations_usage(df_merged_radius,df_stations,engine)
     return 'Station Added'
