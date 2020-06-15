@@ -4,3 +4,4 @@ __pycache__/
 *.csv
 *.pbix
 !stations_centroids.csv
+.env

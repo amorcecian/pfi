@@ -42,7 +42,7 @@ def close_db(error):
 
 @app.route('/')
 def hello():
-    return 'Hello, world'
+    return 'Welcome to DataBike'
 
 
 @app.route('/start', methods=["GET"])
