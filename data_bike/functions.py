@@ -4,7 +4,6 @@ from sklearn.neighbors import NearestNeighbors
 import pandas as pd
 import sqlalchemy
 from sqlalchemy  import create_engine
-#import pymssql
 import numpy as np
 from geopy.distance import distance
 

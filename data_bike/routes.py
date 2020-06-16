@@ -5,11 +5,13 @@ from functools import wraps
 import logging
 import json
 import pymssql
+from config import config_data
 
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        valid_auth_header = "Bearer "+ app.config['API_TOKEN']
+        valid_auth_header = "Bearer "+ config_data['API_TOKEN']
+        # valid_auth_header = "Bearer "+ app.config['API_TOKEN']
         # valid_auth_header = app.config['API_TOKEN']
         if request.headers.get('Authorization') != valid_auth_header:
             print("Failed Auth!")
@@ -39,13 +41,7 @@ def close_db(error):
     if hasattr(g, 'conn'):
         g.conn.close()
 
-
-@app.route('/')
-def hello():
-    return 'Welcome to DataBike'
-
-
-@app.route('/start', methods=["GET"])
+@app.before_first_request
 def start():
     engine = engine_creation()
     df_merged_radius,df_stations = group_stations(engine)
@@ -53,11 +49,31 @@ def start():
     calculate_stations_usage(df_merged_radius,df_stations,engine)
     return 'Data Successfully Loaded'
 
+@app.route('/')
+def hello():
+    return 'Welcome to DataBike'
+
+@app.route('/restart', methods=["GET"])
+@requires_auth
+def restart():
+    engine = engine_creation()
+    df_merged_radius,df_stations = group_stations(engine)
+    print("Stations grouped successfully")
+    calculate_stations_usage(df_merged_radius,df_stations,engine)
+    return 'Data Successfully Loaded'
+
+
 @app.route('/add_station', methods=["POST"])
+@requires_auth
 def add_station_api():
     if request.method == 'POST':
         engine = engine_creation()
         station = request.get_json()
-        df_merged_radius,df_stations = add_station(station['nombre'],station['capacidad'],station['cluster'],engine)
+        df_merged_radius,df_stations,station_number = add_station(station['nombre'],station['capacidad'],station['cluster'],engine)
         calculate_stations_usage(df_merged_radius,df_stations,engine)
-    return 'Station Added'
+    return 'Station '+ station_number +' Added'
+
+@app.route('/retrieve_stations')
+def retrieve_stations():
+    engine = engine_creation()
+    return get_stations(engine)

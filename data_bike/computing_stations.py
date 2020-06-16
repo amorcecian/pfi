@@ -7,7 +7,6 @@ import logging
 from config import config_data
 from datetime import datetime
 from data_bike.functions import *
-#from functions import *
 import sqlalchemy
 from sqlalchemy  import create_engine
 from geopy import Point
@@ -19,11 +18,6 @@ user = config_data['USER']
 password = config_data['PASSWORD']
 db = config_data['DB']    
 
-# Local DB PC
-# server = 'DESKTOP-3OHRULK'
-# user = 'sa'
-# password = 'welcome1'
-# db = 'pfidb'
 
 #######################################################
 #Logger configuration
@@ -190,7 +184,7 @@ def add_station(nombre, capacidad, cluster,engine):
     engine.execute("TRUNCATE TABLE [dbo].[average_fuller_clusters]")
     logging.info("Tables erased")
 
-    return df_merged_radius,df_stations
+    return df_merged_radius,df_stations,str(new_station['nro_est'])
 
 
 def calculate_stations_usage(df_merged_radius,df_stations,engine):
@@ -201,11 +195,11 @@ def calculate_stations_usage(df_merged_radius,df_stations,engine):
 
     # DataFrame adding the month and year to the stations usage average DataFrame
     # Not used for now
-    stations_avg_month_df = df_stations_usage.copy()
-    stations_avg_month_df['year_month'] = stations_avg_month_df['fecha_y_hora'].apply(lambda x: x.strftime('%Y-%m'))
-    stations_avg_month_df = stations_avg_month_df.groupby(['nro_est','year_month'])['bicicletas_en_estacion','usos'].mean()
-    stations_avg_month_df = stations_avg_month_df.sort_values('bicicletas_en_estacion').reset_index()
-    logging.info("Stations usage average df created")
+    # stations_avg_month_df = df_stations_usage.copy()
+    # stations_avg_month_df['year_month'] = stations_avg_month_df['fecha_y_hora'].apply(lambda x: x.strftime('%Y-%m'))
+    # stations_avg_month_df = stations_avg_month_df.groupby(['nro_est','year_month'])['bicicletas_en_estacion','usos'].mean()
+    # stations_avg_month_df = stations_avg_month_df.sort_values('bicicletas_en_estacion').reset_index()
+    # logging.info("Stations usage average df created")
 
     #####################################################################################
     #####################################################################################
@@ -226,6 +220,13 @@ def calculate_stations_usage(df_merged_radius,df_stations,engine):
     logging.info("Inserting Clusters and their ussage")
     generic_insert(engine,'average_fuller_clusters',average_fuller_clusters) #Inserting the clusters
     logging.info("Insert of the clusters finished")
+
+
+def get_stations(engine):
+    stations_query = """SELECT * FROM [estaciones-de-bicicletas-publicas]"""
+    df_stations = pd.read_sql(stations_query,engine)
+    logging.info("Stations loaded")
+    return df_stations.to_json(orient='records')
 #######################################################
 #######################################################
 ########## FUNCTIONS DEFINITION END ###################
@@ -240,8 +241,10 @@ def calculate_stations_usage(df_merged_radius,df_stations,engine):
 # df_stations = pd.read_sql(stations_query,engine)
 # logging.info("Query read successfully")
 
-# df_merged_radius,df_stations = group_stations()
-# calculate_stations_usage(df_merged_radius,df_stations)
+# engine = engine_creation()
+# df_merged_radius,df_stations = group_stations(engine)
+# calculate_stations_usage(df_merged_radius,df_stations,engine)
+
 # df_merged_radius,df_stations = add_station('Test Retiro I',20,18)
 # df_merged_radius,df_stations = add_station('Test Retiro II',200,18)
 #df_merged_radius,df_stations = add_station('Test Retiro III',1000,18)

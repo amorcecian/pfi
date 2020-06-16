@@ -2,6 +2,12 @@ from os import getenv
 
 config_data = {}
 
+if getenv('APP_ENV') == 'local':
+    config_data['DEBUG'] = True
+else:
+    config_data['DEBUG'] = False
+
+config_data['API_TOKEN'] = getenv('API_TOKEN')
 if getenv('SERVER') is not None:
     config_data['SERVER'] = getenv('SERVER')
     config_data['USER'] = getenv('USER')
