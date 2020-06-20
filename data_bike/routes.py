@@ -52,13 +52,13 @@ def close_db(error):
     if hasattr(g, 'conn'):
         g.conn.close()
 
-@app.before_first_request
-def start():
-    engine = engine_creation()
-    df_merged_radius,df_stations = group_stations(engine)
-    print("Stations grouped successfully")
-    calculate_stations_usage(df_merged_radius,df_stations,engine)
-    return 'Data Successfully Loaded'
+# @app.before_first_request
+# def start():
+#     engine = engine_creation()
+#     df_merged_radius,df_stations = group_stations(engine)
+#     print("Stations grouped successfully")
+#     calculate_stations_usage(df_merged_radius,df_stations,engine)
+#     return 'Data Successfully Loaded'
 
 @app.route('/')
 def hello():
