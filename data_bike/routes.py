@@ -60,7 +60,9 @@ def close_db(error):
 #     calculate_stations_usage(df_merged_radius,df_stations,engine)
 #     return 'Data Successfully Loaded'
 
+
 @app.route('/')
+@task_running
 def hello():
     return 'Welcome to DataBike'
 
