@@ -32,6 +32,7 @@ def task_running(endpoint):
             return "Work is happenning. Please wait."
         else:
             return endpoint(*args, **kwargs)
+    return new_endpoint
 
 def get_db(as_dict=False):
     """Opens a new database connection if there is none yet for the
