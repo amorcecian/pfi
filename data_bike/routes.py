@@ -26,9 +26,9 @@ def requires_auth(f):
 def task_running(endpoint):
     @wraps(endpoint)
     def new_endpoint(*args, **kwargs):
-        with open('queue', 'w') as f:
+        with open('queue', 'r') as f:
             status = f.read()
-        if status == 'Pending':
+        if 'Pending' in status:
             return "Work is happenning. Please wait."
         else:
             return endpoint(*args, **kwargs)
