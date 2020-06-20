@@ -67,6 +67,11 @@ def close_db(error):
 def hello():
     return 'Welcome to DataBike'
 
+@app.route("/status")
+@task_running
+def status():
+    return "Ready"
+
 @app.route('/restart', methods=["GET"])
 @requires_auth
 def restart():
