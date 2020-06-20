@@ -22,6 +22,17 @@ def requires_auth(f):
             return f(*args, **kwargs)
     return decorated
 
+
+def task_running(endpoint):
+    @wraps(endpoint)
+    def new_endpoint(*args, **kwargs):
+        with open('queue', 'w') as f:
+            status = f.read()
+        if status == 'Pending':
+            return "Work is happenning. Please wait."
+        else:
+            return endpoint(*args, **kwargs)
+
 def get_db(as_dict=False):
     """Opens a new database connection if there is none yet for the
     current application context.
