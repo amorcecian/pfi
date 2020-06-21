@@ -6,6 +6,10 @@ import logging
 import json
 import pymssql
 from config import config_data
+import os
+
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def requires_auth(f):
     @wraps(f)
@@ -22,11 +26,11 @@ def requires_auth(f):
             return f(*args, **kwargs)
     return decorated
 
-
 def task_running(endpoint):
     @wraps(endpoint)
     def new_endpoint(*args, **kwargs):
-        with open('queue', 'r') as f:
+        # with open('queue', 'r') as f:
+        with open(os.path.join(__location__, 'queue'),'r') as f:
             status = f.read()
         if 'Pending' in status:
             return "Work is happenning. Please wait."
