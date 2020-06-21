@@ -1,9 +1,9 @@
-FROM python:3.7.7-alpine3.12
+FROM python:3.7-buster
 
 
 WORKDIR /app/src
 
-RUN apk update && apk upgrade && apk add gcc musl-dev libffi-dev openssl-dev
+#RUN apt-get update && apt-get upgrade && apt-get install gcc musl-dev libffi-dev openssl-dev
 
 COPY . .
 
