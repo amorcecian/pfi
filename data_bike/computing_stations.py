@@ -12,11 +12,16 @@ from sqlalchemy  import create_engine
 from geopy import Point
 from geopy.distance import distance
 
-# # If want to connect with OpenShift and pass the values
+# DB Credentials
 server = config_data['SERVER']
 user = config_data['USER']
 password = config_data['PASSWORD']
-db = config_data['DB']    
+db = config_data['DB']
+
+# server = app.config_data['SERVER']
+# user = app.config_data['USER']
+# password = app.config_data['PASSWORD']
+# db = app.config_data['DB']  
 
 
 #######################################################
@@ -81,7 +86,7 @@ def group_stations(engine):
 
     df_clusters = df_merged.groupby("cluster")["nro_est"].apply(list).reset_index()
     df_clusters["count"] = df_clusters["nro_est"].apply(len)
-    return df_merged_radius,df_stations
+    return None
 
 
 def jsonify_usig(res):
@@ -104,6 +109,10 @@ def new_lat_long(lat1, lon1):
     origin = Point(lat1, lon1)
     destination = distance(kilometers=d).destination(origin, b)
     return destination
+
+def new_station_number():
+    engine = engine_creation()
+    return engine.execute("SELECT MAX(nro_est)+1 FROM [estaciones-de-bicicletas-publicas]").fetchone()[0]
 
 def add_station(nombre, capacidad, cluster,engine):
     # ONLY NEEDS NAME, CAPACITY AND CLUSTER!!
@@ -174,20 +183,28 @@ def add_station(nombre, capacidad, cluster,engine):
     df_stations_aux = df_stations_aux.append(new_station_aux, ignore_index=True)
     generic_insert(engine,'estaciones-de-bicicletas-publicas',df_stations_aux)
     
-    df_merged_radius = pd.read_sql(stations_clusters_query,engine)
+    # df_merged_radius = pd.read_sql(stations_clusters_query,engine)
 
-    df_stations = pd.read_sql(stations_query,engine)
-    logging.info("Stations loaded")
+    # df_stations = pd.read_sql(stations_query,engine)
+    # logging.info("Stations loaded")
 
     # Cleaning tables
     engine.execute("TRUNCATE TABLE [dbo].[stations_clusters_usage]")
     engine.execute("TRUNCATE TABLE [dbo].[average_fuller_clusters]")
     logging.info("Tables erased")
 
-    return df_merged_radius,df_stations,str(new_station['nro_est'])
+    return None
+    # return str(new_station['nro_est'])
 
 
-def calculate_stations_usage(df_merged_radius,df_stations,engine):
+def calculate_stations_usage(engine):
+    # Retrieving the stations
+    stations_query = """SELECT * FROM [estaciones-de-bicicletas-publicas]"""
+    df_stations = pd.read_sql(stations_query,engine)
+    # Retrieving the clusters and stations
+    stations_clusters_query = """SELECT * FROM [stations_with_centroids]"""
+    df_merged_radius = pd.read_sql(stations_clusters_query,engine)
+
     logging.info("Calculating the stations usage")
     df_stations_usage = stations_usage(engine,df_stations)
     stations_avg_df = df_stations_usage.groupby('nro_est')['bicicletas_en_estacion','usos'].mean()

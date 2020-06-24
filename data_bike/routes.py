@@ -1,5 +1,5 @@
 from data_bike import app
-from data_bike.computing_stations import *
+from data_bike.computing_stations import new_station_number
 from flask import Flask, g, jsonify, request, render_template
 from functools import wraps
 import logging
@@ -76,27 +76,36 @@ def hello():
 def status():
     return "Ready"
 
-@app.route('/restart', methods=["GET"])
-@requires_auth
+@app.route('/restart')
+@task_running
+# @requires_auth
 def restart():
-    engine = engine_creation()
-    df_merged_radius,df_stations = group_stations(engine)
-    print("Stations grouped successfully")
-    calculate_stations_usage(df_merged_radius,df_stations,engine)
-    return 'Data Successfully Loaded'
+    with open(os.path.join(__location__, 'queue'),'w') as f:
+        f.write("Pending,Start")
+    return "System is restarting"
+    # engine = engine_creation()
+    # df_merged_radius,df_stations = group_stations(engine)
+    # print("Stations grouped successfully")
+    # calculate_stations_usage(df_merged_radius,df_stations,engine)
+    # return 'Data Successfully Loaded'
 
 
 @app.route('/add_station', methods=["POST"])
 @requires_auth
 def add_station_api():
     if request.method == 'POST':
-        engine = engine_creation()
         station = request.get_json()
-        df_merged_radius,df_stations,station_number = add_station(station['nombre'],station['capacidad'],station['cluster'],engine)
-        calculate_stations_usage(df_merged_radius,df_stations,engine)
-    return 'Station '+ station_number +' Added'
+        with open(os.path.join(__location__, 'queue'),'w') as f:
+            f.write(f"Pending,Add_Station,{station['nombre']},{station['capacidad']},{station['cluster']}")
+        station_number = new_station_number()
+    return "Station " + str(station_number) + " is being added"
+    #     engine = engine_creation()
+    #     station = request.get_json()
+    #     df_merged_radius,df_stations,station_number = add_station(station['nombre'],station['capacidad'],station['cluster'],engine)
+    #     calculate_stations_usage(df_merged_radius,df_stations,engine)
+    # return 'Station '+ station_number +' Added'
 
-@app.route('/retrieve_stations')
-def retrieve_stations():
-    engine = engine_creation()
-    return get_stations(engine)
+# @app.route('/retrieve_stations')
+# def retrieve_stations():
+#     engine = engine_creation()
+#     return get_stations(engine)
