@@ -10,7 +10,7 @@ else:
 config_data['API_TOKEN'] = getenv('API_TOKEN')
 if getenv('SERVER') is not None:
     config_data['SERVER'] = getenv('SERVER')
-    config_data['USER'] = getenv('USER')
+    config_data['USER'] = getenv('DB_USER')
     config_data['PASSWORD'] = getenv('PASSWORD')
     config_data['DB'] = getenv('DB')
     config_data['QUEUE'] = getenv('QUEUE')
