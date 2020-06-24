@@ -4,7 +4,7 @@ import logging
 import pandas as pd
 import numpy as np
 from pathlib import Path
-# from config import config_data
+from config import config_data
 # from computing_stations import *
 from data_bike.computing_stations import engine_creation,group_stations,calculate_stations_usage,add_station
 import os
@@ -24,7 +24,7 @@ logging.basicConfig(#filename="output.log",
 # __location__ = os.path.realpath(
 #     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-data_folder = Path("data_bike")
+data_folder = Path(config_data['QUEUE'])
 file_to_open = data_folder / "queue"
 
 # def clean_queue(status):
