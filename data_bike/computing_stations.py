@@ -21,7 +21,7 @@ db = config_data['DB']
 # server = app.config_data['SERVER']
 # user = app.config_data['USER']
 # password = app.config_data['PASSWORD']
-# db = app.config_data['DB']  
+# db = app.config_data['DB']
 
 
 #######################################################
