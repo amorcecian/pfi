@@ -239,7 +239,8 @@ def calculate_stations_usage(engine):
     logging.info("Insert of the clusters finished")
 
 
-def get_stations(engine):
+def get_stations():
+    engine = engine_creation()
     stations_query = """SELECT * FROM [estaciones-de-bicicletas-publicas]"""
     df_stations = pd.read_sql(stations_query,engine)
     logging.info("Stations loaded")

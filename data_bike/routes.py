@@ -1,5 +1,5 @@
 from data_bike import app
-from data_bike.computing_stations import new_station_number
+from data_bike.computing_stations import new_station_number,get_stations
 from flask import Flask, g, jsonify, request, render_template
 from functools import wraps
 import logging
@@ -14,8 +14,8 @@ __location__ = os.path.realpath(
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        valid_auth_header = "Bearer "+ config_data['API_TOKEN']
-        # valid_auth_header = "Bearer "+ app.config['API_TOKEN']
+        # valid_auth_header = "Bearer "+ config_data['API_TOKEN']
+        valid_auth_header = "Bearer "+ app.config['API_TOKEN']
         # valid_auth_header = app.config['API_TOKEN']
         if request.headers.get('Authorization') != valid_auth_header:
             print("Failed Auth!")
@@ -105,7 +105,6 @@ def add_station_api():
     #     calculate_stations_usage(df_merged_radius,df_stations,engine)
     # return 'Station '+ station_number +' Added'
 
-# @app.route('/retrieve_stations')
-# def retrieve_stations():
-#     engine = engine_creation()
-#     return get_stations(engine)
+@app.route('/retrieve_stations')
+def retrieve_stations():
+    return get_stations()
