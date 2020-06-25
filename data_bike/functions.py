@@ -105,10 +105,15 @@ def stations_usage(conn, df_stations):
     #######################################
     # Create the return date
     paths_2018_df['bici_tiempo_uso'] = pd.to_timedelta(paths_2018_df['bici_tiempo_uso'].astype(str))
-    paths_2018_df['bici_Fecha_hora_devolucion'] = paths_2018_df['bici_Fecha_hora_retiro'] + paths_2018_df['bici_tiempo_uso']
+    paths_2018_df['bici_Fecha_hora_devolucion'] = pd.to_datetime(paths_2018_df['bici_Fecha_hora_retiro']) + paths_2018_df['bici_tiempo_uso']
+    # Round the withdraw time (OLD)
+    # paths_2018_df['bici_Fecha_hora_retiro_round'] = paths_2018_df['bici_Fecha_hora_retiro'].apply(lambda x: x.replace(minute=0, second=0))
+    # paths_2018_df['bici_Fecha_hora_devolucion_round'] = paths_2018_df['bici_Fecha_hora_devolucion'].apply(lambda x: x.replace(minute=0, second=0))
+    
     # Round the withdraw time
-    paths_2018_df['bici_Fecha_hora_retiro_round'] = paths_2018_df['bici_Fecha_hora_retiro'].apply(lambda x: x.replace(minute=0, second=0))
-    paths_2018_df['bici_Fecha_hora_devolucion_round'] = paths_2018_df['bici_Fecha_hora_devolucion'].apply(lambda x: x.replace(minute=0, second=0))
+    paths_2018_df['bici_Fecha_hora_retiro_round'] = paths_2018_df['bici_Fecha_hora_retiro'].apply(lambda x: np.array(x, dtype='datetime64[h]'))
+    paths_2018_df['bici_Fecha_hora_devolucion_round'] = paths_2018_df['bici_Fecha_hora_devolucion'].apply(lambda x: np.array(x, dtype='datetime64[h]'))
+
     # Compute whitdraws for each station for each hour
     withdraws_df = paths_2018_df[['bici_Fecha_hora_retiro_round', 'bici_estacion_origen', 'bici_id_usuario']].copy()
     withdraws_df = withdraws_df.groupby(['bici_Fecha_hora_retiro_round', 'bici_estacion_origen'])['bici_id_usuario'].count().reset_index().sort_values('bici_Fecha_hora_retiro_round')
