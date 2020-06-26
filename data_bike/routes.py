@@ -14,8 +14,8 @@ __location__ = os.path.realpath(
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        # valid_auth_header = "Bearer "+ config_data['API_TOKEN']
-        valid_auth_header = "Bearer "+ app.config['API_TOKEN']
+        valid_auth_header = "Bearer "+ config_data['API_TOKEN']
+        # valid_auth_header = "Bearer "+ app.config['API_TOKEN']
         # valid_auth_header = app.config['API_TOKEN']
         if request.headers.get('Authorization') != valid_auth_header:
             print("Failed Auth!")
