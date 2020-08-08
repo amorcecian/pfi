@@ -6,6 +6,7 @@ import sqlalchemy
 from sqlalchemy  import create_engine
 import numpy as np
 from geopy.distance import distance
+import random
 
 # This function needs two parameters:
 #   - Dataframe with lat and long fields. Lat represents the latitude of the 
@@ -95,11 +96,18 @@ def defining_right_k(df_stations):
     right_K = int(silhouette.loc[silhouette['cluster']>=22]['cluster'].iloc[0])
     return right_K
 
+def seconds_to_clock(x):
+    x = random.randint(60,300)
+    minutes = x//60
+    seconds = x%60
+    return f"00:{minutes:02d}:{seconds:02d}"
 
 def stations_usage(conn, df_stations):
     paths_2018_df = pd.read_sql_query("SELECT * FROM [dbo].[recorridos-realizados-2018]", conn)
     bak_df = paths_2018_df.copy() # I can take out this step later
-    paths_2018_df = paths_2018_df.dropna()
+    random_mask = paths_2018_df['bici_tiempo_uso'].isna()
+    paths_2018_df.loc[random_mask, 'bici_tiempo_uso'] = paths_2018_df.loc[random_mask, 'bici_tiempo_uso'].apply(seconds_to_clock)
+    paths_2018_df = paths_2018_df.dropna(how='all')
     #######################################
     # Data Manipulation
     #######################################
