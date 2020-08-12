@@ -206,7 +206,9 @@ def calculate_stations_usage(engine):
     df_merged_radius = pd.read_sql(stations_clusters_query,engine)
 
     logging.info("Calculating the stations usage")
+    # Calling the function that computes the usage
     df_stations_usage = stations_usage(engine,df_stations)
+    # Calculating the average of the usage for each station
     stations_avg_df = df_stations_usage.groupby('nro_est')['bicicletas_en_estacion','usos'].mean()
     stations_avg_df = stations_avg_df.sort_values('bicicletas_en_estacion').reset_index()
 
