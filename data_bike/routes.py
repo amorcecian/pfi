@@ -105,7 +105,7 @@ def add_station_api():
         with open(os.path.join(__location__, 'queue'),'w') as f:
             f.write(f"Pending,Add_Station,{station['nombre']},{station['capacidad']},{station['cluster']}")
         station_number = new_station_number()
-    return "Station " + str(station_number) + " is being added"
+    return str(station_number)
     #     engine = engine_creation()
     #     station = request.get_json()
     #     df_merged_radius,df_stations,station_number = add_station(station['nombre'],station['capacidad'],station['cluster'],engine)
