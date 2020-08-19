@@ -65,6 +65,12 @@ def close_db(error):
 #     calculate_stations_usage(df_merged_radius,df_stations,engine)
 #     return 'Data Successfully Loaded'
 
+@app.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    return response
+
 
 @app.route('/')
 @task_running
