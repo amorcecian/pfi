@@ -1,5 +1,5 @@
 from data_bike import app
-from data_bike.computing_stations import new_station_number,get_stations
+from data_bike.computing_stations import new_station_number,get_stations,get_clusters
 from flask import Flask, g, jsonify, request, render_template
 from functools import wraps
 import logging
@@ -115,3 +115,7 @@ def add_station_api():
 @app.route('/retrieve_stations')
 def retrieve_stations():
     return get_stations()
+
+@app.route('/retrieve_clusters')
+def retrieve_clusters():
+    return str(get_clusters())

@@ -247,6 +247,15 @@ def get_stations():
     df_stations = pd.read_sql(stations_query,engine)
     logging.info("Stations loaded")
     return df_stations.to_json(orient='records')
+
+def get_clusters():
+    engine = engine_creation()
+    clusters_query = """SELECT DISTINCT cluster FROM [pfidb].[dbo].[stations_with_centroids]"""
+    df_clusters = pd.read_sql(clusters_query,engine)
+    print(df_clusters)
+    logging.info("Clusters loaded")
+    # return df_clusters.to_json(orient='records')
+    return df_clusters["cluster"].tolist()
 #######################################################
 #######################################################
 ########## FUNCTIONS DEFINITION END ###################
