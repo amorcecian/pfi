@@ -11,4 +11,5 @@ scikit-learn-extra==0.1.0b2
 pymssql
 requests==2.22.0
 idna==2.8
-gunicorn==20.0.4python-dotenv
+gunicorn==20.0.4
+python-dotenv

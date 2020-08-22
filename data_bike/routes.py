@@ -1,5 +1,5 @@
 from data_bike import app
-from data_bike.computing_stations import *
+from data_bike.computing_stations import new_station_number,get_stations,get_clusters
 from flask import Flask, g, jsonify, request, render_template
 from functools import wraps
 import logging
@@ -8,6 +8,10 @@ import pymssql
 from data_bike.aadservice import getaccesstoken
 from data_bike.pbiembedservice import getembedparam
 from config import config_data
+import os
+
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 def requires_auth(f):
     @wraps(f)
@@ -24,11 +28,11 @@ def requires_auth(f):
             return f(*args, **kwargs)
     return decorated
 
-
 def task_running(endpoint):
     @wraps(endpoint)
     def new_endpoint(*args, **kwargs):
-        with open('queue', 'r') as f:
+        # with open('queue', 'r') as f:
+        with open(os.path.join(__location__, 'queue'),'r') as f:
             status = f.read()
         if 'Pending' in status:
             return "Work is happenning. Please wait."
@@ -63,6 +67,13 @@ def close_db(error):
 #     calculate_stations_usage(df_merged_radius,df_stations,engine)
 #     return 'Data Successfully Loaded'
 
+@app.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    header['Access-Control-Allow-Headers'] = '*'
+    return response
+
 
 @app.route('/')
 @task_running
@@ -74,25 +85,34 @@ def hello():
 def status():
     return "Ready"
 
-@app.route('/restart', methods=["GET"])
-@requires_auth
+@app.route('/restart')
+@task_running
+# @requires_auth
 def restart():
-    engine = engine_creation()
-    df_merged_radius,df_stations = group_stations(engine)
-    print("Stations grouped successfully")
-    calculate_stations_usage(df_merged_radius,df_stations,engine)
-    return 'Data Successfully Loaded'
+    with open(os.path.join(__location__, 'queue'),'w') as f:
+        f.write("Pending,Start")
+    return "System is restarting"
+    # engine = engine_creation()
+    # df_merged_radius,df_stations = group_stations(engine)
+    # print("Stations grouped successfully")
+    # calculate_stations_usage(df_merged_radius,df_stations,engine)
+    # return 'Data Successfully Loaded'
 
 
 @app.route('/add_station', methods=["POST"])
 @requires_auth
 def add_station_api():
     if request.method == 'POST':
-        engine = engine_creation()
         station = request.get_json()
-        df_merged_radius,df_stations,station_number = add_station(station['nombre'],station['capacidad'],station['cluster'],engine)
-        calculate_stations_usage(df_merged_radius,df_stations,engine)
-    return 'Station '+ station_number +' Added'
+        with open(os.path.join(__location__, 'queue'),'w') as f:
+            f.write(f"Pending,Add_Station,{station['nombre']},{station['capacidad']},{station['cluster']}")
+        station_number = new_station_number()
+    return str(station_number)
+    #     engine = engine_creation()
+    #     station = request.get_json()
+    #     df_merged_radius,df_stations,station_number = add_station(station['nombre'],station['capacidad'],station['cluster'],engine)
+    #     calculate_stations_usage(df_merged_radius,df_stations,engine)
+    # return 'Station '+ station_number +' Added'
 
 @app.route('/retrieve_stations')
 def retrieve_stations():
@@ -142,3 +162,8 @@ def checkconfig():
         return 'Authority URL is not provided in the config.py file'
 
     return None
+    return get_stations()
+
+@app.route('/retrieve_clusters')
+def retrieve_clusters():
+    return str(get_clusters())

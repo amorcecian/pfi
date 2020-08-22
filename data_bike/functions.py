@@ -6,6 +6,7 @@ import sqlalchemy
 from sqlalchemy  import create_engine
 import numpy as np
 from geopy.distance import distance
+import random
 
 # This function needs two parameters:
 #   - Dataframe with lat and long fields. Lat represents the latitude of the 
@@ -95,20 +96,32 @@ def defining_right_k(df_stations):
     right_K = int(silhouette.loc[silhouette['cluster']>=22]['cluster'].iloc[0])
     return right_K
 
+def seconds_to_clock(x):
+    x = random.randint(60,300)
+    minutes = x//60
+    seconds = x%60
+    return f"00:{minutes:02d}:{seconds:02d}"
 
 def stations_usage(conn, df_stations):
     paths_2018_df = pd.read_sql_query("SELECT * FROM [dbo].[recorridos-realizados-2018]", conn)
     bak_df = paths_2018_df.copy() # I can take out this step later
-    paths_2018_df = paths_2018_df.dropna()
+    random_mask = paths_2018_df['bici_tiempo_uso'].isna()
+    paths_2018_df.loc[random_mask, 'bici_tiempo_uso'] = paths_2018_df.loc[random_mask, 'bici_tiempo_uso'].apply(seconds_to_clock)
+    paths_2018_df = paths_2018_df.dropna(how='all')
     #######################################
     # Data Manipulation
     #######################################
     # Create the return date
     paths_2018_df['bici_tiempo_uso'] = pd.to_timedelta(paths_2018_df['bici_tiempo_uso'].astype(str))
-    paths_2018_df['bici_Fecha_hora_devolucion'] = paths_2018_df['bici_Fecha_hora_retiro'] + paths_2018_df['bici_tiempo_uso']
+    paths_2018_df['bici_Fecha_hora_devolucion'] = pd.to_datetime(paths_2018_df['bici_Fecha_hora_retiro']) + paths_2018_df['bici_tiempo_uso']
+    # Round the withdraw time (OLD)
+    # paths_2018_df['bici_Fecha_hora_retiro_round'] = paths_2018_df['bici_Fecha_hora_retiro'].apply(lambda x: x.replace(minute=0, second=0))
+    # paths_2018_df['bici_Fecha_hora_devolucion_round'] = paths_2018_df['bici_Fecha_hora_devolucion'].apply(lambda x: x.replace(minute=0, second=0))
+    
     # Round the withdraw time
-    paths_2018_df['bici_Fecha_hora_retiro_round'] = paths_2018_df['bici_Fecha_hora_retiro'].apply(lambda x: x.replace(minute=0, second=0))
-    paths_2018_df['bici_Fecha_hora_devolucion_round'] = paths_2018_df['bici_Fecha_hora_devolucion'].apply(lambda x: x.replace(minute=0, second=0))
+    paths_2018_df['bici_Fecha_hora_retiro_round'] = paths_2018_df['bici_Fecha_hora_retiro'].apply(lambda x: np.array(x, dtype='datetime64[h]'))
+    paths_2018_df['bici_Fecha_hora_devolucion_round'] = paths_2018_df['bici_Fecha_hora_devolucion'].apply(lambda x: np.array(x, dtype='datetime64[h]'))
+
     # Compute whitdraws for each station for each hour
     withdraws_df = paths_2018_df[['bici_Fecha_hora_retiro_round', 'bici_estacion_origen', 'bici_id_usuario']].copy()
     withdraws_df = withdraws_df.groupby(['bici_Fecha_hora_retiro_round', 'bici_estacion_origen'])['bici_id_usuario'].count().reset_index().sort_values('bici_Fecha_hora_retiro_round')
