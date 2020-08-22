@@ -75,11 +75,6 @@ def after_request(response):
     return response
 
 
-@app.route('/')
-@task_running
-def hello():
-    return 'Welcome to DataBike'
-
 @app.route("/status")
 @task_running
 def status():
