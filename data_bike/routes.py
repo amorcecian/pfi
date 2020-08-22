@@ -119,6 +119,12 @@ def retrieve_stations():
     engine = engine_creation()
     return get_stations(engine)
 
+@app.route('/')
+def index():
+    '''Returns a static HTML page'''
+
+    return render_template('index.html')
+
 @app.route('/getembedinfo', methods=['GET'])
 def getembedinfo():
     '''Returns Embed token and Embed URL'''
