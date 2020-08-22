@@ -5,6 +5,8 @@ from functools import wraps
 import logging
 import json
 import pymssql
+from data_bike.aadservice import getaccesstoken
+from data_bike.pbiembedservice import getembedparam
 from config import config_data
 
 def requires_auth(f):
@@ -96,3 +98,47 @@ def add_station_api():
 def retrieve_stations():
     engine = engine_creation()
     return get_stations(engine)
+
+@app.route('/getembedinfo', methods=['GET'])
+def getembedinfo():
+    '''Returns Embed token and Embed URL'''
+
+    configresult = checkconfig()
+    if configresult is None:
+        try:
+            accesstoken = getaccesstoken()
+            embedinfo = getembedparam(accesstoken)
+        except Exception as ex:
+            return json.dumps({'errorMsg': str(ex)}), 500
+    else:
+        return json.dumps({'errorMsg': configresult}), 500
+
+    return embedinfo
+
+
+def checkconfig():
+    '''Returns a message to user for a missing configuration'''
+    if app.config['AUTHENTICATION_MODE'] == '':
+        return 'Please specify one the two authentication modes'
+    if app.config['AUTHENTICATION_MODE'].lower() == 'serviceprincipal' and app.config['TENANT_ID'] == '':
+        return 'Tenant ID is not provided in the config.py file'
+    elif app.config['REPORT_ID'] == '':
+        return 'Report ID is not provided in config.py file'
+    elif app.config['WORKSPACE_ID'] == '':
+        return 'Workspace ID is not provided in config.py file'
+    elif app.config['CLIENT_ID'] == '':
+        return 'Client ID is not provided in config.py file'
+    elif app.config['AUTHENTICATION_MODE'].lower() == 'masteruser':
+        if app.config['POWER_BI_USER'] == '':
+            return 'Master account username is not provided in config.py file'
+        elif app.config['POWER_BI_PASS'] == '':
+            return 'Master account password is not provided in config.py file'
+    elif app.config['AUTHENTICATION_MODE'].lower() == 'serviceprincipal':
+        if app.config['CLIENT_SECRET'] == '':
+            return 'Client secret is not provided in config.py file'
+    elif app.config['SCOPE'] == '':
+        return 'Scope is not provided in the config.py file'
+    elif app.config['AUTHORITY_URL'] == '':
+        return 'Authority URL is not provided in the config.py file'
+
+    return None
