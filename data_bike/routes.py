@@ -120,6 +120,12 @@ def index():
 
     return render_template('index.html')
 
+@app.route('/dashboard1')
+def dashboard1():
+    '''Returns the static dashboard'''
+
+    return render_template('dashboard1.html')
+
 @app.route('/getembedinfo', methods=['GET'])
 def getembedinfo():
     '''Returns Embed token and Embed URL'''
