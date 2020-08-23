@@ -128,6 +128,7 @@ def getembedinfo():
     if configresult is None:
         try:
             accesstoken = getaccesstoken()
+            print(accesstoken)
             embedinfo = getembedparam(accesstoken)
         except Exception as ex:
             return json.dumps({'errorMsg': str(ex)}), 500
@@ -163,7 +164,7 @@ def checkconfig():
         return 'Authority URL is not provided in the config.py file'
 
     return None
-    return get_stations()
+
 
 @app.route('/retrieve_clusters')
 def retrieve_clusters():
