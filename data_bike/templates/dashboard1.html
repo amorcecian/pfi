@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="assets/images/icon/logo_bike_vPi_icon.ico">
+
+    <title>DataBike</title>
+    <!-- Custom CSS -->
+    <link href="assets/libs/flot/css/float-chart.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="dist/css/style.min.css" rel="stylesheet">
+    <link href="assets/libs/jquery-confirm/jquery-confirm.min.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+
+    <style>
+        .logo {
+            width: 200px;
+        }
+
+        body {
+            font-family: "Montserrat";
+        }
+
+        .btn-simular {
+            float: right;
+            margin-bottom: 10px;
+            color: #fff;
+            background-color: #12cc66ab;
+            border-color: #12cc66ab;
+        }
+
+        .btn-simular:hover {
+            color: #fff;
+            background-color: #12CC66;
+            border-color: #12CC66;
+        }
+
+
+        .btn-primary {
+            color: #fff;
+            background-color: #12cc66ab;
+            border-color: #12cc66ab;
+        }
+
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #12CC66;
+            border-color: #12CC66;
+        }
+
+        .error {
+            font-size: 12px;
+            inline-size: inherit;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header" data-logobg="skin5">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <a class="navbar-brand" href="index.html">
+                        <!-- Logo icon -->
+                        <img src="assets/images/logoDataBike.png" class="light-logo logo" alt="logo" />
+                        <!--End Logo icon -->
+                    </a>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Toggle which is visible on mobile only -->
+                    <!-- ============================================================== -->
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i></a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-left mr-auto">
+                        <!-- ============================================================== -->
+                        <!-- create new -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="d-none d-md-block">DataBike</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-right">
+
+
+
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar" data-sidebarbg="skin5">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav" class="p-t-30">
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="index.html" aria-expanded="false"><i class="mdi mdi-home"></i><span
+                                    class="hide-menu">Home</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
+                                href="javascript:void(0)" aria-expanded="false"><i
+                                    class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboards </span></a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item"><a href="dashboard1.html" class="sidebar-link"><i
+                                            class="mdi mdi-chart-bar"></i><span class="hide-menu"> Dashboard 1
+                                        </span></a></li>
+                                <li class="sidebar-item"><a href="dashboard2.html" class="sidebar-link"><i
+                                            class="mdi mdi-chart-areaspline"></i><span class="hide-menu"> Dashboard 2
+                                        </span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="page-breadcrumb">
+                <div class="row">
+                    <div class="col-12 d-flex no-block align-items-center">
+                        <h4 class="page-title">Dashboard 1</h4>
+                        <div class="ml-auto text-right">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Dashboard 1</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <div class="actions clearfix">
+                    <button type="button" class="btn btn-success btn-simular">Simular</button>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <iframe width="100%" height="700"
+                                    src="https://app.powerbi.com/view?r=eyJrIjoiMTE1MjEzODItYWMwNy00YjJlLWE1MTItMWYzZjgxNjQzYjk3IiwidCI6IjE5NGFkMDc2LWU4MDQtNGJhMy1hODI1LThiZGYxMWY1Nzg0YiJ9"
+                                    frameborder="0" allowFullScreen="true"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+
+    <div class="modal fade show" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Estación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form role="form" id="frm">
+                        <div class="form-group row">
+                            <label for="fname" class="col-sm-3 text-right control-label col-form-label">Nombre*</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="fnameStation" name="fnameStation" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="fname"
+                                class="col-sm-3 text-right control-label col-form-label">Capacidad*</label>
+                            <div class="col-sm-9 input-group mb-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">#</div>
+                                </div>
+                                <input type="text" class="form-control" id="fcapacidad" name="fcapacidad" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="fname" class="col-sm-3 text-right control-label col-form-label">Cluster*</label>
+                            <div class="col-sm-9">
+                                <select id="fcluster" name="fcluster" class="form-control custom-select selectFormato"
+                                    required>
+                                    <option disable selected></option>
+                                    <option value="2">1</option>
+                                    <option value="1">2</option>
+                                    <option value="15">15</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span style="font-size: 11px; float: right">* Campos obligatorios</span>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary btn-add-station">Agregar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="assets/libs/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="assets/extra-libs/sparkline/sparkline.js"></script>
+    <!--Wave Effects -->
+    <script src="dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="dist/js/sidebarmenu.js"></script>
+    <!--Custom JavaScript -->
+    <script src="dist/js/custom.min.js"></script>
+    <!--This page JavaScript -->
+    <!-- <script src="dist/js/pages/dashboards/dashboard1.js"></script> -->
+    <!-- Charts js Files -->
+    <script src="assets/libs/flot/excanvas.js"></script>
+    <script src="assets/libs/flot/jquery.flot.js"></script>
+    <script src="assets/libs/flot/jquery.flot.pie.js"></script>
+    <script src="assets/libs/flot/jquery.flot.time.js"></script>
+    <script src="assets/libs/flot/jquery.flot.stack.js"></script>
+    <script src="assets/libs/flot/jquery.flot.crosshair.js"></script>
+    <script src="assets/libs/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+    <script src="dist/js/pages/chart/chart-page-init.js"></script>
+
+    <script src="assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="assets/libs/jquery-confirm/jquery-confirm.min.js"></script>
+
+    <script lang="javascript">
+        $(document).ready(function () {
+
+            $(".btn-simular").click(function () {
+                $('#Modal2').modal('show');
+            });
+
+            $(".btn-add-station").click(function () {
+                var nombre = $("#fnameStation").val();
+                var capacidad = $("#fcapacidad").val();
+                var cluster = $("#fcluster").val();
+
+                var settings = {
+                    "url": "https://amorcecian.pythonanywhere.com/add_station",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Authorization": "Bearer MeRqCJ1jQuhVj7FKPbGY",
+                        "Content-Type": "application/json"
+                    },
+                    "data": JSON.stringify({ "nombre": nombre, "capacidad": capacidad, "cluster": cluster }),
+                };
+
+                var validator = $("#frm").validate();
+                if (validator.form()) {
+                    $.ajax(settings).done(function (response) {
+                        $.alert({
+                            type: 'green',
+                            title: 'Nueva Estación',
+                            content: 'Se agregó la estación número: ' + response,
+                            buttons: {
+                                OK: function () {
+                                    $('#Modal2').modal('hide');
+                                    location.reload();
+                                },
+                            }
+                        });
+                        //console.log(response);
+                    });
+                }
+            });
+
+        });
+    </script>
+
+
+</body>
+
+</html>
