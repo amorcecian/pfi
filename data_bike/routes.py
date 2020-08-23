@@ -139,27 +139,27 @@ def getembedinfo():
 
 def checkconfig():
     '''Returns a message to user for a missing configuration'''
-    if app.config['AUTHENTICATION_MODE'] == '':
+    if config_data['AUTHENTICATION_MODE'] == '':
         return 'Please specify one the two authentication modes'
-    if app.config['AUTHENTICATION_MODE'].lower() == 'serviceprincipal' and app.config['TENANT_ID'] == '':
+    if config_data['AUTHENTICATION_MODE'].lower() == 'serviceprincipal' and config_data['TENANT_ID'] == '':
         return 'Tenant ID is not provided in the config.py file'
-    elif app.config['REPORT_ID'] == '':
+    elif config_data['REPORT_ID'] == '':
         return 'Report ID is not provided in config.py file'
-    elif app.config['WORKSPACE_ID'] == '':
+    elif config_data['WORKSPACE_ID'] == '':
         return 'Workspace ID is not provided in config.py file'
-    elif app.config['CLIENT_ID'] == '':
+    elif config_data['CLIENT_ID'] == '':
         return 'Client ID is not provided in config.py file'
-    elif app.config['AUTHENTICATION_MODE'].lower() == 'masteruser':
-        if app.config['POWER_BI_USER'] == '':
+    elif config_data['AUTHENTICATION_MODE'].lower() == 'masteruser':
+        if config_data['POWER_BI_USER'] == '':
             return 'Master account username is not provided in config.py file'
-        elif app.config['POWER_BI_PASS'] == '':
+        elif config_data['POWER_BI_PASS'] == '':
             return 'Master account password is not provided in config.py file'
-    elif app.config['AUTHENTICATION_MODE'].lower() == 'serviceprincipal':
-        if app.config['CLIENT_SECRET'] == '':
+    elif config_data['AUTHENTICATION_MODE'].lower() == 'serviceprincipal':
+        if config_data['CLIENT_SECRET'] == '':
             return 'Client secret is not provided in config.py file'
-    elif app.config['SCOPE'] == '':
+    elif config_data['SCOPE'] == '':
         return 'Scope is not provided in the config.py file'
-    elif app.config['AUTHORITY_URL'] == '':
+    elif config_data['AUTHORITY_URL'] == '':
         return 'Authority URL is not provided in the config.py file'
 
     return None
