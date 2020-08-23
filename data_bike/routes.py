@@ -7,7 +7,7 @@ import json
 import pymssql
 from data_bike.aadservice import getaccesstoken
 from data_bike.pbiembedservice import getembedparam
-from config import config_data
+from data_bike.config import config_data
 import os
 
 __location__ = os.path.realpath(
