@@ -1,381 +1,59 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png"
-        href="{{ url_for('static', filename='assets/images/icon/logo_bike_vPi_icon.ico') }}">
-
-    <title>DataBike</title>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/libs/jquery-confirm/jquery-confirm.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-
-    <style>
-        .logo {
-            width: 200px;
-        }
-
-        body {
-            font-family: "Montserrat";
-        }
-
-        .btn-simular {
-            float: right;
-            margin-bottom: 10px;
-            color: #fff;
-            background-color: #12cc66ab;
-            border-color: #12cc66ab;
-        }
-
-        .btn-status {
-            float: right;
-            margin-bottom: 10px;
-            margin-right: 5px;
-        }
-
-        .btn-simular:hover {
-            color: #fff;
-            background-color: #12CC66;
-            border-color: #12CC66;
-        }
-
-
-        .btn-primary {
-            color: #fff;
-            background-color: #12cc66ab;
-            border-color: #12cc66ab;
-        }
-
-        .btn-primary:hover {
-            color: #fff;
-            background-color: #12CC66;
-            border-color: #12CC66;
-        }
-
-        .error {
-            font-size: 12px;
-            inline-size: inherit;
-            color: red;
-        }
-
-        #reportContainer {
-            height: 800px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/external/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <title>Embedded Power BI report</title>
 </head>
 
 <body>
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
-    <div class="preloader">
-        <div class="lds-ripple">
-            <div class="lds-pos"></div>
-            <div class="lds-pos"></div>
-        </div>
-    </div>
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <div id="main-wrapper">
-        <!-- ============================================================== -->
-        <!-- Topbar header - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <header class="topbar" data-navbarbg="skin5">
-            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-                <div class="navbar-header" data-logobg="skin5">
-                    <!-- This is for the sidebar toggle which is visible on mobile only -->
-                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
-                            class="ti-menu ti-close"></i></a>
-                    <!-- ============================================================== -->
-                    <!-- Logo -->
-                    <!-- ============================================================== -->
-                    <a class="navbar-brand" href="index.html">
-                        <!-- Logo icon -->
-                        <img src="{{ url_for('static', filename='assets/images/logoDataBike.png') }}"
-                            class="light-logo logo" alt="logo" />
-                        <!--End Logo icon -->
-                    </a>
-                    <!-- ============================================================== -->
-                    <!-- End Logo -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- Toggle which is visible on mobile only -->
-                    <!-- ============================================================== -->
-                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
-                        data-toggle="collapse" data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
-                            class="ti-more"></i></a>
-                </div>
-                <!-- ============================================================== -->
-                <!-- End Logo -->
-                <!-- ============================================================== -->
-                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-                    <!-- ============================================================== -->
-                    <!-- toggle and nav items -->
-                    <!-- ============================================================== -->
-                    <ul class="navbar-nav float-left mr-auto">
-                        <!-- ============================================================== -->
-                        <!-- create new -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="d-none d-md-block">DataBike1</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- ============================================================== -->
-                    <!-- Right side toggle and nav items -->
-                    <!-- ============================================================== -->
-                    <ul class="navbar-nav float-right">
-
-
-
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <!-- ============================================================== -->
-        <!-- End Topbar header -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <aside class="left-sidebar" data-sidebarbg="skin5">
-            <!-- Sidebar scroll-->
-            <div class="scroll-sidebar">
-                <!-- Sidebar navigation-->
-                <nav class="sidebar-nav">
-                    <ul id="sidebarnav" class="p-t-30">
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="index.html" aria-expanded="false"><i class="mdi mdi-home"></i><span
-                                    class="hide-menu">Home</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                                href="javascript:void(0)" aria-expanded="false"><i
-                                    class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboards </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level">
-                                <li class="sidebar-item"><a href="dashboard1.html" class="sidebar-link"><i
-                                            class="mdi mdi-chart-bar"></i><span class="hide-menu"> Dashboard 1
-                                        </span></a></li>
-                                <li class="sidebar-item"><a href="dashboard2.html" class="sidebar-link"><i
-                                            class="mdi mdi-chart-areaspline"></i><span class="hide-menu"> Dashboard 2
-                                        </span></a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- End Sidebar navigation -->
+    <header class="embed-container col-lg-12 col-md-12 col-sm-12 shadow">
+        <p>
+            Pruebita de integracion
+        </p>
+    </header>
+    <main class="row">
+        <section id="text-container" class="embed-container col-lg-4 col-md-4 col-sm-4 mb-5 ml-5 mt-5">
+            <div>
+                <p>This sample is developed using Flask framework.
+                    <br>
+                    In order to see a different report, make changes to the <i>config.py</i> file.
+                </p>
+                <p>Code is present in the following files:
+                    <ol>
+                        <li>app.py</li>
+                        <li>aadservice.py</li>
+                        <li>pbiembedservice.py</li>
+                        <li>index.js</li>
+                        <li>index.html</li>
+                        <li>index.css</li>
+                    </ol>
+                </p>
             </div>
-            <!-- End Sidebar scroll-->
-        </aside>
-        <!-- ============================================================== -->
-        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Page wrapper  -->
-        <!-- ============================================================== -->
-        <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-12 d-flex no-block align-items-center">
-                        <h4 class="page-title">Dashboard 1</h4>
-                        <div class="ml-auto text-right">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Dashboard 1</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <div class="actions clearfix">
-                    <button type="button" class="btn btn-success btn-simular">Agregar Estación</button>
-                    <button type="button" class="btn btn-info btn-status">Estado</button>
-                </div>
+        </section>
+        <section id="report-container" class="embed-container col-lg-offset-4 col-lg-7 col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7 mt-5">
+        </section>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <section id="report-container"
-                                    class="embed-container col-lg-offset-4 col-lg-7 col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7 mt-5">
-                                </section>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Page wrapper  -->
-    <!-- ============================================================== -->
-
-    <div class="modal fade show" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar Estación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <form role="form" id="frm">
-                        <div class="form-group row">
-                            <label for="fname" class="col-sm-3 text-right control-label col-form-label">Nombre*</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="fnameStation" name="fnameStation" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="fname"
-                                class="col-sm-3 text-right control-label col-form-label">Capacidad*</label>
-                            <div class="col-sm-9 input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">#</div>
-                                </div>
-                                <input type="text" class="form-control" id="fcapacidad" name="fcapacidad" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="fname" class="col-sm-3 text-right control-label col-form-label">Cluster*</label>
-                            <div class="col-sm-9">
-                                <select id="fcluster" name="fcluster" class="form-control custom-select selectFormato"
-                                    required>
-                                    <option disable selected></option>
-                                    <option value="2">1</option>
-                                    <option value="1">2</option>
-                                    <option value="15">15</option>
-                                    <option value="18">18</option>
-                                </select>
-                            </div>
-                        </div>
-                        <span style="font-size: 11px; float: right">* Campos obligatorios</span>
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary btn-add-station">Agregar y Simular</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
+        <!-- Used to display report embed error messages -->
+        <section class="error-container m-5">
+        </section>
+    </main>
+    <footer class="embed-container col-lg-12 col-md-12 col-sm-12 mb-0 mt-4">
+        <p class="text-center">
+            For Live demo and more code samples please visit <a
+            href="https://aka.ms/pbijs">https://aka.ms/pbijs</a>
+            <br>
+            For JavaScript API, please visit <a
+            href="https://aka.ms/PowerBIjs">https://aka.ms/PowerBIjs</a>
+        </p>
+    </footer>
     <script src="{{ url_for('static', filename='js/external/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/external/jquery-3.4.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/external/powerbi.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-    <!--<script src="{{ url_for('static', filename='js/external/custom.min.js') }}"></script>-->
-
-    <script lang="javascript">
-        $(document).ready(function () {
-
-            $(".btn-simular").click(function () {
-                $('#Modal2').modal('show');
-            });
-
-            $(".btn-add-station").click(function () {
-                var nombre = $("#fnameStation").val();
-                var capacidad = $("#fcapacidad").val();
-                var cluster = $("#fcluster").val();
-
-                var settings = {
-                    "url": "https://amorcecian.pythonanywhere.com/add_station",
-                    "method": "POST",
-                    "timeout": 0,
-                    "headers": {
-                        "Authorization": "Bearer MeRqCJ1jQuhVj7FKPbGY",
-                        "Content-Type": "application/json"
-                    },
-                    "data": JSON.stringify({ "nombre": nombre, "capacidad": capacidad, "cluster": cluster }),
-                };
-
-                var validator = $("#frm").validate();
-                if (validator.form()) {
-                    $.ajax(settings).done(function (response) {
-                        $.alert({
-                            type: 'green',
-                            title: 'Nueva Estación',
-                            content: 'Se agregó la estación número: ' + response,
-                            buttons: {
-                                OK: function () {
-                                    $('#Modal2').modal('hide');
-                                    location.reload();
-                                },
-                            }
-                        });
-                        //console.log(response);
-                    });
-                }
-            });
-
-            $(".btn-status").click(function () {
-                $.ajax({
-                    type: "GET",
-                    url: "https://amorcecian.pythonanywhere.com/status",
-                    success: function (data) {
-                        $.alert({
-                            type: 'blue',
-                            title: 'Estado del sistema',
-                            content: data,
-                            buttons: {
-                                OK: function () {
-
-                                },
-                            }
-                        });
-                    }
-                });
-            });
-
-        });
-    </script>
-
-
 </body>
-
 </html>
