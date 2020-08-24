@@ -118,6 +118,12 @@ def retrieve_stations():
 def index():
     '''Returns a static HTML page'''
 
+    return render_template('authentication-login.html')
+
+@app.route('/home')
+def home():
+    '''Returns a static HTML page'''
+
     return render_template('index.html')
 
 @app.route('/dashboard1')
