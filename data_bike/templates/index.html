@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='assets/images/icon/logo_bike_vPi_icon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/external/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <title>Embedded Power BI report</title>
@@ -24,18 +26,19 @@
                     In order to see a different report, make changes to the <i>config.py</i> file.
                 </p>
                 <p>Code is present in the following files:
-                    <ol>
-                        <li>app.py</li>
-                        <li>aadservice.py</li>
-                        <li>pbiembedservice.py</li>
-                        <li>index.js</li>
-                        <li>index.html</li>
-                        <li>index.css</li>
-                    </ol>
+                <ol>
+                    <li>app.py</li>
+                    <li>aadservice.py</li>
+                    <li>pbiembedservice.py</li>
+                    <li>index.js</li>
+                    <li>index.html</li>
+                    <li>index.css</li>
+                </ol>
                 </p>
             </div>
         </section>
-        <section id="report-container" class="embed-container col-lg-offset-4 col-lg-7 col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7 mt-5">
+        <section id="report-container"
+            class="embed-container col-lg-offset-4 col-lg-7 col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7 mt-5">
         </section>
 
         <!-- Used to display report embed error messages -->
@@ -44,11 +47,9 @@
     </main>
     <footer class="embed-container col-lg-12 col-md-12 col-sm-12 mb-0 mt-4">
         <p class="text-center">
-            For Live demo and more code samples please visit <a
-            href="https://aka.ms/pbijs">https://aka.ms/pbijs</a>
+            For Live demo and more code samples please visit <a href="https://aka.ms/pbijs">https://aka.ms/pbijs</a>
             <br>
-            For JavaScript API, please visit <a
-            href="https://aka.ms/PowerBIjs">https://aka.ms/PowerBIjs</a>
+            For JavaScript API, please visit <a href="https://aka.ms/PowerBIjs">https://aka.ms/PowerBIjs</a>
         </p>
     </footer>
     <script src="{{ url_for('static', filename='js/external/jquery-3.4.1.min.js') }}"></script>
@@ -56,4 +57,5 @@
     <script src="{{ url_for('static', filename='js/external/powerbi.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
+
 </html>
