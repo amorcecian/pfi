@@ -41,122 +41,119 @@
 </head>
 
 <body>
-    <header class="topbar" data-navbarbg="skin5">
-        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-            <div class="navbar-header" data-logobg="skin5">
-                <!-- This is for the sidebar toggle which is visible on mobile only -->
-                <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
-                        class="ti-menu ti-close"></i></a>
-                <!-- ============================================================== -->
-                <!-- Logo -->
-                <!-- ============================================================== -->
-                <a class="navbar-brand" href="https://amorcecian.pythonanywhere.com/">
-                    <!-- Logo icon -->
-                    <img src="{{ url_for('static', filename='assets/images/logoDataBike.png') }}"
-                        class="light-logo logo" alt="logo" />
-                    <!--End Logo icon -->
-                </a>
+    <div id="main-wrapper">
+        <header class="topbar" data-navbarbg="skin5">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header" data-logobg="skin5">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <a class="navbar-brand" href="https://amorcecian.pythonanywhere.com/">
+                        <!-- Logo icon -->
+                        <img src="{{ url_for('static', filename='assets/images/logoDataBike.png') }}"
+                            class="light-logo logo" alt="logo" />
+                        <!--End Logo icon -->
+                    </a>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Toggle which is visible on mobile only -->
+                    <!-- ============================================================== -->
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i>
+                    </a>
+
+                </div>
                 <!-- ============================================================== -->
                 <!-- End Logo -->
                 <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Toggle which is visible on mobile only -->
-                <!-- ============================================================== -->
-                <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
-                    data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i>
-                </a>
-
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-                <!-- ============================================================== -->
-                <!-- toggle and nav items -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav float-left mr-auto">
+                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
                     <!-- ============================================================== -->
-                    <!-- create new -->
+                    <!-- toggle and nav items -->
                     <!-- ============================================================== -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="d-none d-md-block">DataBike</span>
-                        </a>
-                    </li>
-                </ul>
-                <!-- ============================================================== -->
-                <!-- Right side toggle and nav items -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav float-right">
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <!-- ============================================================== -->
-    <!-- Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
-    <aside class="left-sidebar" data-sidebarbg="skin5">
-        <!-- Sidebar scroll-->
-        <div class="scroll-sidebar">
-            <!-- Sidebar navigation-->
-            <nav class="sidebar-nav">
-                <ul id="sidebarnav" class="p-t-30">
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                            href="https://amorcecian.pythonanywhere.com/" aria-expanded="false"><i class="mdi mdi-home"></i><span
-                                class="hide-menu">Home</span></a></li>
-                    <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"><i
-                                class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboards </span></a>
-                        <ul aria-expanded="false" class="collapse  first-level">
-                            <li class="sidebar-item"><a href="dashboard1" class="sidebar-link"><i
-                                        class="mdi mdi-chart-bar"></i><span class="hide-menu"> Dashboard 1
-                                    </span></a></li>
-                            <li class="sidebar-item"><a href="dashboard2" class="sidebar-link"><i
-                                        class="mdi mdi-chart-areaspline"></i><span class="hide-menu"> Dashboard 2
-                                    </span></a></li>
-                        </ul>
-                    </li>
-                </ul>
+                    <ul class="navbar-nav float-left mr-auto">
+                        <!-- ============================================================== -->
+                        <!-- create new -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="d-none d-md-block">DataBike</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-right">
+                    </ul>
+                </div>
             </nav>
-            <!-- End Sidebar navigation -->
-        </div>
-        <!-- End Sidebar scroll-->
-    </aside>
-    <!-- ============================================================== -->
-    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Page wrapper  -->
-    <!-- ============================================================== -->
-    <div class="page-wrapper">
-        <!-- ============================================================== -->
-        <!-- Container fluid  -->
-        <!-- ============================================================== -->
-        <div class="container-fluid">
-            <div class="actions clearfix">
-                <button type="button" class="btn btn-success btn-simular">Agregar Estación</button>
-                <button type="button" class="btn btn-info btn-status">Estado</button>
-            </div>
+        </header>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <section id="report-container">
-                            </section>
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar" data-sidebarbg="skin5">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav" class="p-t-30">
+                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                href="https://amorcecian.pythonanywhere.com/" aria-expanded="false"><i
+                                    class="mdi mdi-home"></i><span class="hide-menu">Home</span></a></li>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
+                                href="javascript:void(0)" aria-expanded="false"><i
+                                    class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboards </span></a>
+                            <ul aria-expanded="false" class="collapse  first-level">
+                                <li class="sidebar-item"><a href="dashboard1" class="sidebar-link"><i
+                                            class="mdi mdi-chart-bar"></i><span class="hide-menu"> Dashboard 1
+                                        </span></a></li>
+                                <li class="sidebar-item"><a href="dashboard2" class="sidebar-link"><i
+                                            class="mdi mdi-chart-areaspline"></i><span class="hide-menu"> Dashboard 2
+                                        </span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <section id="report-container">
+                                </section>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
 
-
     </div>
-
-
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
