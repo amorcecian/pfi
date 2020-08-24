@@ -2,9 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png"
         href="{{ url_for('static', filename='assets/images/icon/logo_bike_vPi_icon.ico') }}">
@@ -13,6 +16,14 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/libs/jquery-confirm/jquery-confirm.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
 
     <style>
         .logo {
@@ -21,6 +32,10 @@
 
         body {
             font-family: "Montserrat";
+        }
+
+        #report-container {
+            height: 600px;
         }
     </style>
 </head>
@@ -90,8 +105,8 @@
             <nav class="sidebar-nav">
                 <ul id="sidebarnav" class="p-t-30">
                     <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                            href="https://amorcecian.pythonanywhere.com/" aria-expanded="false"><i class="mdi mdi-home"></i><span
-                                class="hide-menu">Home</span></a></li>
+                            href="https://amorcecian.pythonanywhere.com/" aria-expanded="false"><i
+                                class="mdi mdi-home"></i><span class="hide-menu">Home</span></a></li>
                     <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
                             href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
                                 class="hide-menu">Dashboards </span></a>
