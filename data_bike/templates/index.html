@@ -8,9 +8,11 @@
     <!-- Favicon icon -->
     <link rel="icon" type="image/png"
         href="{{ url_for('static', filename='assets/images/icon/logo_bike_vPi_icon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/external/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
     <title>DataBike</title>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/libs/jquery-confirm/jquery-confirm.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.min.css') }}">
 
     <style>
         .logo {
@@ -36,7 +38,7 @@
                 <a class="navbar-brand" href="https://amorcecian.pythonanywhere.com/">
                     <!-- Logo icon -->
                     <img src="{{ url_for('static', filename='assets/images/logoDataBike.png') }}"
-                    class="light-logo logo" alt="logo" />
+                        class="light-logo logo" alt="logo" />
                     <!--End Logo icon -->
                 </a>
                 <!-- ============================================================== -->
@@ -77,44 +79,108 @@
             </div>
         </nav>
     </header>
-    <main class="row">
-        <section id="text-container" class="embed-container col-lg-4 col-md-4 col-sm-4 mb-5 ml-5 mt-5">
-            <div>
-                <p>This sample is developed using Flask framework.
-                    <br>
-                    In order to see a different report, make changes to the <i>config.py</i> file.
-                </p>
-                <p>Code is present in the following files:
-                <ol>
-                    <li>app.py</li>
-                    <li>aadservice.py</li>
-                    <li>pbiembedservice.py</li>
-                    <li>index.js</li>
-                    <li>index.html</li>
-                    <li>index.css</li>
-                </ol>
-                </p>
-            </div>
-        </section>
-        <section id="report-container"
-            class="embed-container col-lg-offset-4 col-lg-7 col-md-offset-5 col-md-7 col-sm-offset-5 col-sm-7 mt-5">
-        </section>
 
-        <!-- Used to display report embed error messages -->
-        <section class="error-container m-5">
-        </section>
-    </main>
-    <footer class="embed-container col-lg-12 col-md-12 col-sm-12 mb-0 mt-4">
-        <p class="text-center">
-            For Live demo and more code samples please visit <a href="https://aka.ms/pbijs">https://aka.ms/pbijs</a>
-            <br>
-            For JavaScript API, please visit <a href="https://aka.ms/PowerBIjs">https://aka.ms/PowerBIjs</a>
-        </p>
-    </footer>
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <aside class="left-sidebar" data-sidebarbg="skin5">
+        <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav" class="p-t-30">
+                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                            href="https://amorcecian.pythonanywhere.com/" aria-expanded="false"><i class="mdi mdi-home"></i><span
+                                class="hide-menu">Home</span></a></li>
+                    <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
+                            href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
+                                class="hide-menu">Dashboards </span></a>
+                        <ul aria-expanded="false" class="collapse  first-level">
+                            <li class="sidebar-item"><a href="dashboard1" class="sidebar-link"><i
+                                        class="mdi mdi-chart-bar"></i><span class="hide-menu"> Dashboard 1
+                                    </span></a></li>
+                            <li class="sidebar-item"><a href="dashboard2" class="sidebar-link"><i
+                                        class="mdi mdi-chart-areaspline"></i><span class="hide-menu"> Dashboard 2
+                                    </span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+    </aside>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">Dashboard 1</h4>
+                    <div class="ml-auto text-right">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="https://amorcecian.pythonanywhere.com/">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Dashboard 1</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Bread crumb and right sidebar toggle -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid">
+            <div class="actions clearfix">
+                <button type="button" class="btn btn-success btn-simular">Agregar Estación</button>
+                <button type="button" class="btn btn-info btn-status">Estado</button>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <section id="report-container">
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
     <script src="{{ url_for('static', filename='js/external/jquery-3.4.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/external/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/external/powerbi.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/external/custom.min.js') }}"></script>
+
+    <!--Menu sidebar -->
+    <script src="{{ url_for('static', filename='js/external/sidebarmenu.js') }}"></script>
+
+    <script
+        src="{{ url_for('static', filename='assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js') }}"></script>
+    <script
+        src="{{ url_for('static', filename='assets/libs/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/libs/jquery-confirm/jquery-confirm.min.js') }}"></script>
 </body>
 
 </html>
