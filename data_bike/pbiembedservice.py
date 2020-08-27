@@ -3,7 +3,7 @@ import requests
 import json
 
 
-def getembedparam(accesstoken):
+def getembedparam(accesstoken,idReport):
     '''Returns Embed token and Embed URL'''
 
     try:
@@ -11,7 +11,11 @@ def getembedparam(accesstoken):
                    'Authorization': 'Bearer ' + accesstoken}
         print(app.config['WORKSPACE_ID'])
 
-        reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
+        if idReport == 1:
+            reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
+            app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']
+        else:
+            reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
             app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']
 
         apiresponse = None

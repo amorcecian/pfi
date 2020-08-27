@@ -132,8 +132,14 @@ def dashboard1():
 
     return render_template('dashboard1.html')
 
+@app.route('/dashboard2')
+def dashboard2():
+    '''Returns the static dashboard'''
+
+    return render_template('dashboard2.html')
+
 @app.route('/getembedinfo', methods=['GET'])
-def getembedinfo():
+def getembedinfo(idReport):
     '''Returns Embed token and Embed URL'''
 
     configresult = checkconfig()
@@ -141,13 +147,14 @@ def getembedinfo():
         try:
             accesstoken = getaccesstoken()
             print(accesstoken)
-            embedinfo = getembedparam(accesstoken)
+            embedinfo = getembedparam(accesstoken,idReport)
         except Exception as ex:
             return json.dumps({'errorMsg': str(ex)}), 500
     else:
         return json.dumps({'errorMsg': configresult}), 500
 
     return embedinfo
+
 
 
 def checkconfig():
