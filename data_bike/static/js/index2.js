@@ -15,7 +15,7 @@ $(function () {
     // Initialize iframe for embedding report
     powerbi.bootstrap(reportContainer, reportLoadConfig);
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "/getembedinfo",
         data: {idReport: 2},
         dataType: "json",

@@ -138,7 +138,7 @@ def dashboard2():
 
     return render_template('dashboard2.html')
 
-@app.route('/getembedinfo', methods=['GET'])
+@app.route('/getembedinfo', methods=['POST'])
 def getembedinfo(idReport):
     '''Returns Embed token and Embed URL'''
 
