@@ -139,9 +139,9 @@ def dashboard2():
     return render_template('dashboard2.html')
 
 @app.route('/getembedinfo', methods=['POST'])
-def getembedinfo(idReport):
+def getembedinfo():
     '''Returns Embed token and Embed URL'''
-
+    idReport = request.form.get('idReport')
     configresult = checkconfig()
     if configresult is None:
         try:
