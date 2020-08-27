@@ -11,8 +11,12 @@ def getembedparam(accesstoken,idReport):
                    'Authorization': 'Bearer ' + accesstoken}
         print(app.config['WORKSPACE_ID'])
 
-        reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
-            app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']
+        if idReport == 1:
+            reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
+                app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']
+        else:
+            reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
+                app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID2']
 
         apiresponse = None
 
@@ -81,7 +85,7 @@ def getembedparam(accesstoken,idReport):
                 'Error while extracting Embed token from API response\n' + apiresponse.reason)
 
         response = {'accessToken': embedtoken,
-                    'embedUrl': embedurl, 'tokenExpiry': tokenexpiry,'reportID':idReport}
+                    'embedUrl': embedurl, 'tokenExpiry': tokenexpiry}
         return json.dumps(response)
     except Exception as ex:
         return json.dumps({'errorMsg': str(ex)}), 500
