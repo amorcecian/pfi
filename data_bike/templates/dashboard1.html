@@ -388,7 +388,7 @@
                 success: function(response) {
                     var data = $.parseJSON(response);
                     $.each(data, function(key, value) {
-                        $('#fcluster').append('<option value="' + value[0] + '" selected>' + value[1] + '</option>');
+                        $('#fcluster').append('<option value="' + value[0] + '">' + value[0] + '</option>');
                     });
                 }
             })
