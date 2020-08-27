@@ -3,7 +3,7 @@ import requests
 import json
 
 
-def getembedparam(accesstoken):
+def getembedparam(accesstoken,idReport):
     '''Returns Embed token and Embed URL'''
 
     try:
@@ -81,7 +81,7 @@ def getembedparam(accesstoken):
                 'Error while extracting Embed token from API response\n' + apiresponse.reason)
 
         response = {'accessToken': embedtoken,
-                    'embedUrl': embedurl, 'tokenExpiry': tokenexpiry}
+                    'embedUrl': embedurl, 'tokenExpiry': tokenexpiry,'reportID':idReport}
         return json.dumps(response)
     except Exception as ex:
         return json.dumps({'errorMsg': str(ex)}), 500
