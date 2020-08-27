@@ -17,7 +17,7 @@ $(function () {
     $.ajax({
         type: "POST",
         url: "/getembedinfo",
-        data: {idReport: 1},
+        data: {idReport: $idReport},
         dataType: "json",
         success: function (data) {
             embedData = $.parseJSON(JSON.stringify(data));
