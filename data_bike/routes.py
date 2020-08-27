@@ -147,7 +147,8 @@ def getembedinfo(idReport):
         try:
             accesstoken = getaccesstoken()
             print(accesstoken)
-            embedinfo = getembedparam(accesstoken,idReport)
+            print(idReport)
+            embedinfo = getembedparam(accesstoken)
         except Exception as ex:
             return json.dumps({'errorMsg': str(ex)}), 500
     else:
