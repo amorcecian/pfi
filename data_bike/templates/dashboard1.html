@@ -279,10 +279,6 @@
                                 <select id="fcluster" name="fcluster" class="form-control custom-select selectFormato"
                                     required>
                                     <option disable selected></option>
-                                    <option value="2">1</option>
-                                    <option value="1">2</option>
-                                    <option value="15">15</option>
-                                    <option value="18">18</option>
                                 </select>
                             </div>
                         </div>
@@ -319,8 +315,10 @@
 
 
     <script lang="javascript">
+        //https://amorcecian.pythonanywhere.com/retrieve_clusters
         var $idReport = 1;
         $(document).ready(function () {
+            cargarClusters();
 
             $(".btn-simular").click(function () {
                 $('#Modal2').modal('show');
@@ -381,9 +379,22 @@
             });
 
         });
+
+        function cargarClusters() {
+            $("#fcluster").empty();
+            $.ajax({
+                type: "GET",
+                url: "https://amorcecian.pythonanywhere.com/retrieve_clusters",
+                success: function(response) {
+                    var data = $.parseJSON(response);
+                    $.each(data, function(key, value) {
+                        $('#fcluster').append('<option value="' + value[0] + '" selected>' + value[1] + '</option>');
+                    });
+                }
+            })
+        }
+
+
     </script>
-
-
 </body>
-
 </html>
