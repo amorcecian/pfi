@@ -12,13 +12,17 @@ def getembedparam(accesstoken,idReport):
         print(app.config['WORKSPACE_ID'])
         
         print(idReport)
-        if idReport == 1:
-            reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
-            app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']
-        else:
-            reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
-            app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']
+        
+        #if idReport == 1:
+        #    reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
+        #    app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']
+        #else:
+        #    reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
+        #    app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']*/
 
+        reporturl = 'https://api.powerbi.com/v1.0/myorg/groups/' + \
+            app.config['WORKSPACE_ID'] + '/reports/' + app.config['REPORT_ID']
+            
         apiresponse = None
 
         try:
