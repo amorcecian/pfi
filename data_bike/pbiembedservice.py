@@ -46,9 +46,9 @@ def getembedparam(accesstoken,idReport):
         if datasetId != '':
             body['datasets'].append({'id': datasetId})
 
-        if app.config['REPORT_ID'] != '':
+        if app.config['REPORT_ID2'] != '':
             body['reports'] = []
-            body['reports'].append({'id': app.config['REPORT_ID']})
+            body['reports'].append({'id': app.config['REPORT_ID2']})
 
         if app.config['WORKSPACE_ID'] != '':
             body['targetWorkspaces'] = []
