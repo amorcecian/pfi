@@ -142,6 +142,7 @@ def dashboard2():
 def getembedinfo():
     '''Returns Embed token and Embed URL'''
     idReport = request.form.get('idReport')
+    print("Printing idReport: "+str(idReport))
     configresult = checkconfig()
     if configresult is None:
         try:
