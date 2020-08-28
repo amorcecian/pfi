@@ -20,7 +20,7 @@ if getenv('SERVER') is not None:
     config_data['QUEUE'] = getenv('QUEUE')
     config_data['WORKSPACE_ID'] = getenv('WORKSPACE_ID')
     config_data['REPORT_ID'] = getenv('REPORT_ID')
-    config_data['REPORT_ID2'] = getenv('REPORT_ID_2')
+    config_data['REPORT_ID2'] = getenv('REPORT_ID')
     config_data['CLIENT_ID'] = getenv('CLIENT_ID')
     config_data['POWER_BI_USER'] = getenv('POWER_BI_USER')
     config_data['POWER_BI_PASS'] = getenv('POWER_BI_PASS')
