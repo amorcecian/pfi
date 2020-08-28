@@ -386,9 +386,8 @@
                 type: "GET",
                 url: "https://amorcecian.pythonanywhere.com/retrieve_clusters",
                 success: function(response) {
-                    var data = $.parseJSON(response);
-                    $.each(data, function(key, value) {
-                        $('#fcluster').append('<option value="' + value[0] + '">' + value[0] + '</option>');
+                    $.each(response, function(key, value) {
+                        $('#fcluster').append('<option value="' + value + '">' + value + '</option>');
                     });
                 }
             })
