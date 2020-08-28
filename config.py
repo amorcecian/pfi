@@ -19,7 +19,7 @@ if getenv('SERVER') is not None:
     config_data['DB'] = getenv('DB')
     config_data['WORKSPACE_ID'] = getenv('WORKSPACE_ID')
     config_data['REPORT_ID'] = '72543d42-40b0-4148-ac94-4bfb066f497a'
-    config_data['REPORT_ID2'] = '145fcb54-d0bb-468a-b8fa-287ade3123b1'
+    config_data['REPORT_ID'] = '72543d42-40b0-4148-ac94-4bfb066f497a'
     config_data['CLIENT_ID'] = getenv('CLIENT_ID')
     config_data['POWER_BI_USER'] = getenv('POWER_BI_USER')
     config_data['POWER_BI_PASS'] = getenv('POWER_BI_PASS')
