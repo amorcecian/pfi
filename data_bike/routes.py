@@ -141,8 +141,9 @@ def dashboard2():
 @app.route('/getembedinfo', methods=['POST'])
 def getembedinfo():
     '''Returns Embed token and Embed URL'''
-    idReport = request.form.get('idReport')
+    idReport = int(request.form.get('idReport'))
     print("Printing idReport: "+str(idReport))
+    print("Printing idReport type: "+ str(type(idReport)))
     configresult = checkconfig()
     if configresult is None:
         try:

@@ -106,7 +106,7 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="https://amorcecian.pythonanywhere.com/home">
+                    <a class="navbar-brand" href="/home">
                         <!-- Logo icon -->
                         <img src="{{ url_for('static', filename='assets/images/logoDataBike.png') }}"
                             class="light-logo logo" alt="logo" />
@@ -165,7 +165,7 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav" class="p-t-30">
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="https://amorcecian.pythonanywhere.com/home" aria-expanded="false"><i
+                                href="/home" aria-expanded="false"><i
                                     class="mdi mdi-home"></i><span class="hide-menu">Home</span></a></li>
                         <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
                                 href="javascript:void(0)" aria-expanded="false"><i
@@ -203,7 +203,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a
-                                            href="https://amorcecian.pythonanywhere.com/home">Home</a></li>
+                                            href="/home">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Clusters</li>
                                 </ol>
                             </nav>
@@ -303,7 +303,6 @@
     <script src="{{ url_for('static', filename='js/external/jquery-3.4.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/external/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/external/powerbi.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     <script src="{{ url_for('static', filename='js/external/custom.min.js') }}"></script>
 
     <!--Menu sidebar -->
@@ -331,7 +330,7 @@
                 var cluster = $("#fcluster").val();
 
                 var settings = {
-                    "url": "https://amorcecian.pythonanywhere.com/add_station",
+                    "url": "/add_station",
                     "method": "POST",
                     "timeout": 0,
                     "headers": {
@@ -363,7 +362,7 @@
             $(".btn-status").click(function () {
                 $.ajax({
                     type: "GET",
-                    url: "https://amorcecian.pythonanywhere.com/status",
+                    url: "/status",
                     success: function (data) {
                         $.alert({
                             type: 'blue',
@@ -392,7 +391,7 @@
             $('#fcluster').append('<option disable selected></option>');
             $.ajax({
                 type: "GET",
-                url: "https://amorcecian.pythonanywhere.com/retrieve_clusters",
+                url: "/retrieve_clusters",
                 success: function (response) {
                     console.log(response);
                     var data = $.parseJSON(response);
@@ -404,6 +403,7 @@
             })
         }
     </script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 
 
 </body>
